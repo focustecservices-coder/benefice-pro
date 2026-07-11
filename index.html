@@ -4,130 +4,322 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#16a34a">
-<title>Bénéfice Pro Bénin</title>
+<title>Bénéfice Pro - Gestion Commerçant</title>
 <style>
-:root{--bg:#0b1a13;--card:#121f17;--text:#e7f5ec;--muted:#b6c9be;--accent:#16a34a;--accent2:#22c55e}
+:root{--bg:#0b1a13;--card:#121f17;--text:#e7f5ec;--muted:#b6c9be;--accent:#16a34a;--accent2:#22c55e;--danger:#dc2626;--warn:#f59e0b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text);padding:16px}
-.container{max-width:500px;margin:auto}
-.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:24px;border-radius:16px;margin-bottom:16px;text-align:center}
-.hero h1{font-size:28px;margin-bottom:8px}
-.card{background:var(--card);border:1px solid #1f2d23;border-radius:16px;padding:20px;margin-bottom:16px}
-label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
-input{width:100%;padding:14px;border-radius:12px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:16px;margin-bottom:12px}
-.btn{width:100%;padding:16px;background:var(--accent);color:#001b0d;border:none;border-radius:12px;font-size:16px;font-weight:700;margin:8px 0;cursor:pointer;text-decoration:none;display:block;text-align:center}
-.btn:active{transform:scale(0.98)}
+body{font-family:system-ui;background:var(--bg);color:var(--text);padding:10px;font-size:14px}
+.container{max-width:600px;margin:auto}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:16px;border-radius:12px;margin-bottom:10px;text-align:center}
+.card{background:var(--card);border:1px solid #1f2d23;border-radius:12px;padding:14px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+label{display:block;margin-bottom:3px;color:var(--muted);font-size:12px}
+input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:14px}
+.btn{width:100%;padding:12px;background:var(--accent);color:#001b0d;border:none;border-radius:10px;font-size:14px;font-weight:700;margin:5px 0;cursor:pointer}
 .btn-secondary{background:#1f2d23;color:var(--text)}
-.result{display:none;background:#0f1a14;border:2px solid var(--accent);border-radius:16px;padding:20px;margin-top:16px}
-.result h3{margin-bottom:12px;color:var(--accent)}
-.kpi{display:flex;justify-content:space-between;margin:10px 0;padding:8px 0;border-bottom:1px solid #1f2d23}
-.kpi:last-child{border:none}
-.kpi b{color:var(--accent2);font-size:18px}
-.badge{display:inline-block;background:#052e1a;color:#86efac;padding:4px 12px;border-radius:999px;font-size:12px;margin-top:8px}
-.trial{background:#1a2a1f;border:1px solid #2a3a31;padding:12px;border-radius:12px;text-align:center;font-size:14px;margin-bottom:16px}
-.locked{text-align:center;padding:40px 20px}
-.history-item{background:#0f1a14;padding:12px;border-radius:8px;margin:8px 0;font-size:13px;border-left:3px solid var(--accent)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-print{background:var(--warn);color:#000}
+.tabs{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto}
+.tab{padding:8px 12px;background:#1f2d23;border:none;border-radius:8px;color:var(--muted);font-size:13px;white-space:nowrap}
+.tab.active{background:var(--accent);color:#001b0d}
+.kpi{display:flex;justify-content:space-between;margin:6px 0;padding:5px 0;border-bottom:1px solid #1f2d23}
+.kpi b{color:var(--accent2)}
+.kpi.danger b{color:var(--danger)}
+.item{background:#0f1a14;padding:8px;border-radius:6px;margin:5px 0;font-size:12px;border-left:3px solid var(--accent)}
+.trial{background:#1a2a1f;padding:8px;border-radius:8px;text-align:center;font-size:12px;margin-bottom:8px}
+h3{font-size:15px;margin-bottom:8px}
+.stat{padding:10px;background:#0f1a14;border-radius:8px;text-align:center}
+.stat b{display:block;font-size:20px;color:var(--accent2)}
+.stat span{font-size:11px;color:var(--muted)}
+@media print{body{background:#fff;color:#000}.no-print{display:none}.card{border:1px solid #ccc}}
 </style>
 </head>
 <body>
-<div class="container" id="app">
-  <div class="hero">
+<div class="container">
+  <div class="hero no-print">
     <h1>Bénéfice Pro Bénin</h1>
-    <p>Calcule ta marge en 3 secondes</p>
-    <span class="badge">Pour entrepreneurs ambitieux</span>
+    <p>Tableau de bord commerçant</p>
   </div>
 
-  <div id="trialBox" class="trial"></div>
+  <div id="trialBox" class="trial no-print"></div>
 
   <div id="mainApp">
+    <!-- DASHBOARD -->
     <div class="card">
-      <label>Prix de vente (FCFA)</label>
-      <input type="number" id="pv" placeholder="Ex: 5000">
-      
-      <label>Coût de revient (FCFA)</label>
-      <input type="number" id="cr" placeholder="Ex: 3000">
-      
-      <label>Quantité vendue</label>
-      <input type="number" id="qt" placeholder="Ex: 10" value="1">
-      
-      <button class="btn" onclick="calculer()">Calculer mon bénéfice</button>
-      <button class="btn btn-secondary" onclick="installerApp()">📱 Installer sur l'écran</button>
+      <h3>📊 Aujourd'hui</h3>
+      <div class="grid3">
+        <div class="stat"><b id="d_ventes">0</b><span>Ventes FCFA</span></div>
+        <div class="stat"><b id="d_benef">0</b><span>Bénéfice FCFA</span></div>
+        <div class="stat"><b id="d_depens">0</b><span>Dépenses FCFA</span></div>
+      </div>
+      <div class="grid3" style="margin-top:8px">
+        <div class="stat"><b id="m_benef">0</b><span>Bénéf. Mois</span></div>
+        <div class="stat"><b id="a_benef">0</b><span>Bénéf. Année</span></div>
+        <div class="stat"><b id="dette">0</b><span>Débiteurs</span></div>
+      </div>
     </div>
 
-    <div id="res" class="result">
-      <h3>📊 Résultat</h3>
-      <div class="kpi"><span>Bénéfice unitaire</span><b id="bu">0 FCFA</b></div>
-      <div class="kpi"><span>Bénéfice total</span><b id="bt">0 FCFA</b></div>
-      <div class="kpi"><span>Marge</span><b id="marge">0%</b></div>
-      <div class="kpi"><span>Chiffre d'affaires</span><b id="ca">0 FCFA</b></div>
+    <div class="tabs no-print">
+      <button class="tab active" onclick="showTab('vente')">Vente</button>
+      <button class="tab" onclick="showTab('depense')">Dépense</button>
+      <button class="tab" onclick="showTab('dette')">Dette</button>
+      <button class="tab" onclick="showTab('stock')">Stock</button>
+      <button class="tab" onclick="showTab('rapport')">Rapport</button>
     </div>
 
-    <div class="card">
-      <h3>📋 Mes 10 derniers calculs</h3>
-      <div id="histList"></div>
-      <button class="btn btn-secondary" onclick="clearHist()">Vider l'historique</button>
+    <!-- VENTE -->
+    <div id="venteTab" class="card">
+      <h3>💰 Nouvelle vente</h3>
+      <input type="text" id="v_nom" placeholder="Produit / Client">
+      <div class="grid2">
+        <input type="number" id="v_pv" placeholder="Prix vente">
+        <input type="number" id="v_cr" placeholder="Coût achat">
+      </div>
+      <div class="grid2">
+        <input type="number" id="v_qt" placeholder="Quantité" value="1">
+        <select id="v_pay">
+          <option value="cash">Payé Cash</option>
+          <option value="dette">Crédit / Dette</option>
+        </select>
+      </div>
+      <button class="btn" onclick="addVente()">Enregistrer la vente</button>
+    </div>
+
+    <!-- DEPENSE -->
+    <div id="depenseTab" class="card" style="display:none">
+      <h3>💸 Nouvelle dépense</h3>
+      <input type="text" id="d_nom" placeholder="Ex: Loyer, Transport, Salaire">
+      <input type="number" id="d_montant" placeholder="Montant FCFA">
+      <button class="btn btn-danger" onclick="addDepense()">Enregistrer dépense</button>
+    </div>
+
+    <!-- DETTE -->
+    <div id="detteTab" class="card" style="display:none">
+      <h3>👥 Clients débiteurs</h3>
+      <input type="text" id="dt_nom" placeholder="Nom du client">
+      <input type="number" id="dt_montant" placeholder="Montant dû FCFA">
+      <button class="btn" onclick="addDette()">Ajouter dette</button>
+      <div id="detteList" style="margin-top:10px"></div>
+    </div>
+
+    <!-- STOCK -->
+    <div id="stockTab" class="card" style="display:none">
+      <h3>📦 Gestion stock</h3>
+      <input type="text" id="s_nom" placeholder="Nom produit">
+      <div class="grid2">
+        <input type="number" id="s_entree" placeholder="Entrée +">
+        <input type="number" id="s_sortie" placeholder="Sortie -">
+      </div>
+      <button class="btn" onclick="updateStock()">Mettre à jour</button>
+      <div id="stockList" style="margin-top:10px"></div>
+    </div>
+
+    <!-- RAPPORT -->
+    <div id="rapportTab" class="card" style="display:none">
+      <h3>📄 Rapport du mois</h3>
+      <div id="rapportContent"></div>
+      <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer / PDF</button>
+      <button class="btn btn-secondary" onclick="exportData()">📤 Sauvegarder données</button>
     </div>
   </div>
 
-  <div id="lockedApp" class="locked" style="display:none">
+  <div id="lockedApp" class="card no-print" style="display:none;text-align:center">
     <h2>🔒 Essai terminé</h2>
-    <p>Merci d'avoir testé Bénéfice Pro pendant 10 jours.</p>
-    <p style="margin:20px 0">Active ton abonnement pour continuer :</p>
-    <a href="https://wa.me/22967863289?text=Bonjour, je veux activer Bénéfice Pro après mon essai de 10 jours" class="btn">💬 Activer sur WhatsApp</a>
-    
-    <div class="card" style="margin-top:20px">
-      <h3>🔑 J'ai un code d'activation</h3>
-      <input type="text" id="codeInput" placeholder="Entre ton code ici">
-      <button class="btn" onclick="unlock()">Débloquer pour 1 an</button>
-    </div>
+    <p>Abonnement : 5000 FCFA / an</p>
+    <a href="https://wa.me/22967863289?text=Activation Bénéfice Pro" class="btn">💬 WhatsApp 22967863289</a>
+    <input type="text" id="codeInput" placeholder="Code d'activation" style="margin-top:10px">
+    <button class="btn" onclick="unlock()">Débloquer</button>
   </div>
 </div>
 
 <script>
-const TRIAL_DAYS = 10;
-const SECRET_CODE = 'BENIN2024'; // Change ce code quand tu veux
-let installPrompt = null;
+const CODE = 'BENIN2024';
+let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"dettes":[],"stock":{}}');
 
-// GESTION ESSAI 10 JOURS
+function saveDB(){ localStorage.setItem('bp_db', JSON.stringify(db)); updateDash(); }
+
 function checkTrial(){
   let first = localStorage.getItem('bp_first');
-  if(!first){ 
-    first = Date.now(); 
-    localStorage.setItem('bp_first', first); 
-  }
-  let days = Math.floor((Date.now() - first) / 86400000);
-  let left = TRIAL_DAYS - days;
-  
+  if(!first){ first = Date.now(); localStorage.setItem('bp_first', first); }
+  let left = 10 - Math.floor((Date.now() - first) / 86400000);
   if(left <= 0){
     document.getElementById('mainApp').style.display = 'none';
     document.getElementById('lockedApp').style.display = 'block';
     document.getElementById('trialBox').style.display = 'none';
     return false;
-  } else {
-    document.getElementById('trialBox').innerHTML = `⏳ Essai gratuit : <b>${left} jour(s) restant(s)</b> sur 10`;
-    return true;
+  }
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j</b> | 22967863289`;
+  return true;
+}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  ['vente','depense','dette','stock','rapport'].forEach(x=>{
+    document.getElementById(x+'Tab').style.display = x===t?'block':'none';
+  });
+  if(t==='dette') renderDettes();
+  if(t==='stock') renderStock();
+  if(t==='rapport') renderRapport();
+}
+
+function addVente(){
+  if(!checkTrial()) return;
+  let v = {
+    nom: document.getElementById('v_nom').value || 'Vente',
+    pv: +document.getElementById('v_pv').value || 0,
+    cr: +document.getElementById('v_cr').value || 0,
+    qt: +document.getElementById('v_qt').value || 1,
+    pay: document.getElementById('v_pay').value,
+    date: new Date().toISOString()
+  };
+  v.benef = (v.pv - v.cr) * v.qt;
+  v.ca = v.pv * v.qt;
+  db.ventes.unshift(v);
+
+  if(v.pay === 'dette'){
+    db.dettes.push({nom:v.nom, montant:v.ca, date:v.date});
+  }
+
+  saveDB();
+  ['v_nom','v_pv','v_cr','v_qt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('v_qt').value=1;
+  alert('✅ Vente enregistrée');
+}
+
+function addDepense(){
+  let d = {
+    nom: document.getElementById('d_nom').value || 'Dépense',
+    montant: +document.getElementById('d_montant').value || 0,
+    date: new Date().toISOString()
+  };
+  db.depenses.unshift(d);
+  saveDB();
+  document.getElementById('d_nom').value = '';
+  document.getElementById('d_montant').value = '';
+  alert('✅ Dépense enregistrée');
+}
+
+function addDette(){
+  let d = {
+    nom: document.getElementById('dt_nom').value,
+    montant: +document.getElementById('dt_montant').value || 0,
+    date: new Date().toISOString()
+  };
+  if(!d.nom) return;
+  db.dettes.push(d);
+  saveDB();
+  renderDettes();
+  document.getElementById('dt_nom').value = '';
+  document.getElementById('dt_montant').value = '';
+}
+
+function renderDettes(){
+  document.getElementById('detteList').innerHTML = db.dettes.map((d,i)=>
+    `<div class="item">${d.nom}: <b>${d.montant.toLocaleString()} FCFA</b>
+    <button style="float:right;background:var(--accent);border:none;padding:2px 8px;border-radius:4px" onclick="payDette(${i})">Payé</button></div>`
+  ).join('') || '<p style="color:var(--muted)">Aucune dette</p>';
+}
+
+function payDette(i){
+  if(confirm('Marquer comme payé?')){
+    db.dettes.splice(i,1);
+    saveDB();
+    renderDettes();
   }
 }
 
-// CALCUL + HISTORIQUE
-function calculer(){
-  if(!checkTrial()) return;
-  
-  let pv = parseFloat(document.getElementById('pv').value) || 0;
-  let cr = parseFloat(document.getElementById('cr').value) || 0;
-  let qt = parseFloat(document.getElementById('qt').value) || 1;
-  
-  let bu = pv - cr;
-  let bt = bu * qt;
-  let ca = pv * qt;
-  let marge = pv > 0 ? (bu/pv*100).toFixed(1) : 0;
-  
-  document.getElementById('bu').textContent = bu.toLocaleString() + ' FCFA';
-  document.getElementById('bt').textContent = bt.toLocaleString() + ' FCFA';
-  document.getElementById('ca').textContent = ca.toLocaleString() + ' FCFA';
-  document.getElementById('marge').textContent = marge + '%';
-  document.getElementById('res').style.display = 'block';
-  document.getElementById('res').scrollIntoView({behavior:'smooth'});
-  
-  // Sauve historique
-  let hist = JSON.parse(localStorage.getItem('bp_hist')
+function updateStock(){
+  let nom = document.getElementById('s_nom').value;
+  if(!nom) return;
+  if(!db.stock[nom]) db.stock[nom] = 0;
+  db.stock[nom] += (+document.getElementById('s_entree').value || 0);
+  db.stock[nom] -= (+document.getElementById('s_sortie').value || 0);
+  saveDB();
+  renderStock();
+  ['s_nom','s_entree','s_sortie'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderStock(){
+  document.getElementById('stockList').innerHTML = Object.entries(db.stock).map(([n,q])=>
+    `<div class="item">${n}: <b>${q} unités</b></div>`
+  ).join('') || '<p style="color:var(--muted)">Stock vide</p>';
+}
+
+function updateDash(){
+  let now = new Date();
+  let today = now.toDateString();
+  let month = now.getMonth();
+  let year = now.getFullYear();
+
+  let d_v = db.ventes.filter(v=>new Date(v.date).toDateString()===today);
+  let d_b = d_v.reduce((s,v)=>s+v.benef,0);
+  let d_c = d_v.reduce((s,v)=>s+v.ca,0);
+
+  let d_dep = db.depenses.filter(d=>new Date(d.date).toDateString()===today);
+  let d_dp = d_dep.reduce((s,d)=>s+d.montant,0);
+
+  let m_v = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===month&&d.getFullYear()===year});
+  let m_b = m_v.reduce((s,v)=>s+v.benef,0);
+
+  let a_v = db.ventes.filter(v=>new Date(v.date).getFullYear()===year);
+  let a_b = a_v.reduce((s,v)=>s+v.benef,0);
+
+  let det = db.dettes.reduce((s,d)=>s+d.montant,0);
+
+  document.getElementById('d_ventes').textContent = d_c.toLocaleString();
+  document.getElementById('d_benef').textContent = d_b.toLocaleString();
+  document.getElementById('d_depens').textContent = d_dp.toLocaleString();
+  document.getElementById('m_benef').textContent = m_b.toLocaleString();
+  document.getElementById('a_benef').textContent = a_b.toLocaleString();
+  document.getElementById('dette').textContent = det.toLocaleString();
+}
+
+function renderRapport(){
+  let m = new Date().getMonth();
+  let y = new Date().getFullYear();
+  let mv = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===m&&d.getFullYear()===y});
+  let md = db.depenses.filter(d=>{let dt=new Date(d.date);return dt.getMonth()===m&&dt.getFullYear()===y});
+
+  let ca = mv.reduce((s,v)=>s+v.ca,0);
+  let benef = mv.reduce((s,v)=>s+v.benef,0);
+  let dep = md.reduce((s,d)=>s+d.montant,0);
+  let net = benef - dep;
+
+  document.getElementById('rapportContent').innerHTML = `
+    <h3>Rapport ${new Date().toLocaleString('fr-FR',{month:'long',year:'numeric'})}</h3>
+    <div class="kpi"><span>Chiffre d'affaires</span><b>${ca.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Bénéfice brut</span><b>${benef.toLocaleString()} FCFA</b></div>
+    <div class="kpi danger"><span>Total dépenses</span><b>${dep.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span><b>BÉNÉFICE NET</b></span><b>${net.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Nombre de ventes</span><b>${mv.length}</b></div>
+    <hr style="margin:10px 0;border:1px solid #1f2d23">
+    <p style="font-size:11px;color:var(--muted)">Généré le ${new Date().toLocaleDateString()} - Bénéfice Pro Bénin</p>
+  `;
+}
+
+function unlock(){
+  if(document.getElementById('codeInput').value.trim() === CODE){
+    localStorage.setItem('bp_first', Date.now() + 365*86400000);
+    location.reload();
+  } else {
+    alert('Code incorrect');
+  }
+}
+
+function exportData(){
+  let data = JSON.stringify(db,null,2);
+  let blob = new Blob([data], {type:'application/json'});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url;
+  a.download = 'benefice-pro-backup.json';
+  a.click();
+}
+
+checkTrial();
+updateDash();
+</script>
+</body>
+</html>
