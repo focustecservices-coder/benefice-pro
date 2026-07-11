@@ -120,4 +120,160 @@ h3{font-size:15px;margin-bottom:8px}
 
 <script>
 const CODE = 'BENIN2024';
-let db =
+let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
+
+function saveDB(){ localStorage.setItem('bp_db', JSON.stringify(db)); updateDash(); }
+
+function checkTrial(){
+  let first = localStorage.getItem('bp_first');
+  if(!first){ first = Date.now(); localStorage.setItem('bp_first', first); }
+  let left = 10 - Math.floor((Date.now() - first) / 86400000);
+  if(left <= 0){
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('lockedApp').style.display = 'block';
+    document.getElementById('trialBox').style.display = 'none';
+    return false;
+  }
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | WhatsApp: 22967863289`;
+  return true;
+}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  ['vente','depense','stock','rapport'].forEach(x=>{
+    document.getElementById(x+'Tab').style.display = x===t?'block':'none';
+  });
+  if(t==='depense') renderDepenses();
+  if(t==='stock') renderStock();
+  if(t==='rapport') renderRapport();
+}
+
+function addVente(){
+  if(!checkTrial()) return;
+  let v = {
+    nom: document.getElementById('v_nom').value || 'Vente',
+    pv: +document.getElementById('v_pv').value || 0,
+    cr: +document.getElementById('v_cr').value || 0,
+    qt: +document.getElementById('v_qt').value || 1,
+    date: new Date().toISOString()
+  };
+  v.benef = (v.pv - v.cr) * v.qt;
+  v.ca = v.pv * v.qt;
+  db.ventes.unshift(v);
+  saveDB();
+  ['v_nom','v_pv','v_cr','v_qt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('v_qt').value=1;
+  alert('✅ Vente enregistrée: +' + v.benef.toLocaleString() + ' FCFA');
+}
+
+function addDepense(){
+  let d = {
+    nom: document.getElementById('d_nom').value || 'Dépense',
+    montant: +document.getElementById('d_montant').value || 0,
+    date: new Date().toISOString()
+  };
+  db.depenses.unshift(d);
+  saveDB();
+  document.getElementById('d_nom').value = '';
+  document.getElementById('d_montant').value = '';
+  renderDepenses();
+}
+
+function renderDepenses(){
+  document.getElementById('depenseList').innerHTML = db.depenses.slice(0,10).map(d=>
+    `<div class="item">${d.nom}: <b style="color:var(--danger)">-${d.montant.toLocaleString()} FCFA</b></div>`
+  ).join('') || '<p style="color:var(--muted)">Aucune dépense</p>';
+}
+
+function updateStock(){
+  let nom = document.getElementById('s_nom').value;
+  if(!nom) return;
+  if(!db.stock[nom]) db.stock[nom] = 0;
+  db.stock[nom] += (+document.getElementById('s_entree').value || 0);
+  db.stock[nom] -= (+document.getElementById('s_sortie').value || 0);
+  saveDB();
+  renderStock();
+  ['s_nom','s_entree','s_sortie'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderStock(){
+  document.getElementById('stockList').innerHTML = Object.entries(db.stock).map(([n,q])=>
+    `<div class="item">${n}: <b>${q} unités</b></div>`
+  ).join('') || '<p style="color:var(--muted)">Stock vide</p>';
+}
+
+function updateDash(){
+  let now = new Date();
+  let today = now.toDateString();
+  let month = now.getMonth();
+  let year = now.getFullYear();
+
+  let d_v = db.ventes.filter(v=>new Date(v.date).toDateString()===today);
+  let d_b = d_v.reduce((s,v)=>s+v.benef,0);
+  let d_c = d_v.reduce((s,v)=>s+v.ca,0);
+
+  let d_dep = db.depenses.filter(d=>new Date(d.date).toDateString()===today);
+  let d_dp = d_dep.reduce((s,d)=>s+d.montant,0);
+
+  let m_v = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===month&&d.getFullYear()===year});
+  let m_b = m_v.reduce((s,v)=>s+v.benef,0);
+
+  let a_v = db.ventes.filter(v=>new Date(v.date).getFullYear()===year);
+  let a_b = a_v.reduce((s,v)=>s+v.benef,0);
+
+  document.getElementById('d_ventes').textContent = d_c.toLocaleString();
+  document.getElementById('d_benef').textContent = d_b.toLocaleString();
+  document.getElementById('d_depens').textContent = d_dp.toLocaleString();
+  document.getElementById('m_benef').textContent = m_b.toLocaleString();
+  document.getElementById('a_benef').textContent = a_b.toLocaleString();
+  document.getElementById('nb_ventes').textContent = db.ventes.length;
+}
+
+function renderRapport(){
+  let m = new Date().getMonth();
+  let y = new Date().getFullYear();
+  let mv = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===m&&d.getFullYear()===y});
+  let md = db.depenses.filter(d=>{let dt=new Date(d.date);return dt.getMonth()===m&&dt.getFullYear()===y});
+
+  let ca = mv.reduce((s,v)=>s+v.ca,0);
+  let benef = mv.reduce((s,v)=>s+v.benef,0);
+  let dep = md.reduce((s,d)=>s+d.montant,0);
+  let net = benef - dep;
+
+  document.getElementById('rapportContent').innerHTML = `
+    <h3>Rapport ${new Date().toLocaleString('fr-FR',{month:'long',year:'numeric'})}</h3>
+    <div class="kpi"><span>Chiffre d'affaires</span><b>${ca.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Bénéfice brut</span><b>${benef.toLocaleString()} FCFA</b></div>
+    <div class="kpi danger"><span>Total dépenses</span><b>${dep.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span><b>BÉNÉFICE NET</b></span><b>${net.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Nombre de ventes</span><b>${mv.length}</b></div>
+    <hr style="margin:10px 0;border:1px solid #1f2d23">
+    <p style="font-size:11px;color:var(--muted)">Généré le ${new Date().toLocaleDateString()} - Bénéfice Pro</p>
+  `;
+}
+
+function unlock(){
+  if(document.getElementById('codeInput').value.trim() === CODE){
+    localStorage.setItem('bp_first', Date.now() + 365*86400000);
+    location.reload();
+  } else {
+    alert('Code incorrect. WhatsApp: 22967863289');
+  }
+}
+
+function exportData(){
+  let data = JSON.stringify(db,null,2);
+  let blob = new Blob([data], {type:'application/json'});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url;
+  a.download = 'benefice-pro-backup.json';
+  a.click();
+}
+
+checkTrial();
+updateDash();
+</script>
+</body>
+</html>
