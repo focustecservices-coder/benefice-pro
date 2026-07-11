@@ -37,7 +37,8 @@ h3{font-size:15px;margin-bottom:8px}
 .stat b{display:block;font-size:20px;color:var(--accent2)}
 .stat span{font-size:11px;color:var(--muted)}
 #chartBox{height:200px;margin-top:10px}
-.contact-fixed{background:#1a2a1f;padding:8px;border-radius:8px;text-align:center;font-size:12px;margin-bottom:8px;border:1px solid var(--accent)}
+.contact-bar{background:#1a2a1f;padding:10px;border-radius:8px;text-align:center;font-size:13px;margin-bottom:8px;border:2px solid var(--accent)}
+.locked-screen{text-align:center}
 @media print{body{background:#fff;color:#000}.no-print{display:none}.card{border:1px solid #ccc}}
 </style>
 </head>
@@ -49,12 +50,13 @@ h3{font-size:15px;margin-bottom:8px}
   </div>
 
   <!-- CONTACT TOUJOURS VISIBLE -->
-  <div class="contact-fixed no-print">
+  <div class="contact-bar no-print">
     📞 Support WhatsApp : <b>22967863289</b>
   </div>
 
   <div id="trialBox" class="trial no-print"></div>
 
+  <!-- APP PRINCIPALE -->
   <div id="mainApp">
     <div class="card">
       <h3>📊 Aujourd'hui - <span id="dateToday"></span></h3>
@@ -116,15 +118,19 @@ h3{font-size:15px;margin-bottom:8px}
     </div>
   </div>
 
-  <!-- ECRAN BLOQUÉ AVEC CODE -->
-  <div id="lockedApp" class="card no-print" style="display:none;text-align:center">
+  <!-- ECRAN BLOQUÉ -->
+  <div id="lockedApp" class="card no-print locked-screen" style="display:none">
     <h2>🔒 Essai terminé</h2>
-    <p style="margin:10px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
-    <p style="font-size:13px;margin:10px 0">1. Envoie 1000F par MoMo au 22967863289<br>2. Reçois ton code par WhatsApp<br>3. Colle le code ici</p>
+    <p style="margin:15px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
+    <div style="text-align:left;background:#0f1a14;padding:12px;border-radius:8px;margin:10px 0">
+      <p style="margin:5px 0">1. Envoie 1000F par MoMo au <b>22967863289</b></p>
+      <p style="margin:5px 0">2. Reçois ton code par WhatsApp</p>
+      <p style="margin:5px 0">3. Colle le code ci-dessous</p>
+    </div>
     <a href="https://wa.me/22967863289?text=Bonjour, je renouvelle Bénéfice Pro pour 1 mois" class="btn btn-whatsapp">💬 Contacter sur WhatsApp</a>
-    <div style="margin-top:15px;padding:10px;background:#0f1a14;border-radius:8px">
+    <div style="margin-top:15px;padding:12px;background:#0f1a14;border-radius:8px">
       <label><b>Code de renouvellement</b></label>
-      <input type="text" id="codeInput" placeholder="Ex: BENIN2024" style="margin:8px 0;text-transform:uppercase">
+      <input type="text" id="codeInput" placeholder="Ex: BENIN2024" style="margin:8px 0;text-transform:uppercase;text-align:center;font-size:16px;font-weight:700">
       <button class="btn" onclick="unlock()">✅ Débloquer 1 mois</button>
     </div>
   </div>
@@ -154,14 +160,4 @@ function checkTrial(){
     document.getElementById('trialBox').style.display = 'none';
     return false;
   }
-  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | 1000F/mois`;
-  document.getElementById('mainApp').style.display = 'block';
-  document.getElementById('lockedApp').style.display = 'none';
-  return true;
-}
-
-function showTab(t){
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  event.target.classList.add('active');
-  ['vente','depense','stock','rapport'].forEach(x=>{
-    document.getElementBy
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants
