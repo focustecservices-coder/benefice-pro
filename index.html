@@ -110,4 +110,68 @@ h3{font-size:15px;margin-bottom:8px}
       <div id="chartBox"><canvas id="chartVentes"></canvas></div>
       <div id="rapportContent"></div>
       <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer PDF</button>
-      <button class="btn btn-excel" onclick="exportExcel()">📊
+      <button class="btn btn-excel" onclick="exportExcel()">📊 Export Excel</button>
+    </div>
+  </div>
+
+  <div id="lockedApp" class="card no-print hidden" style="text-align:center">
+    <h2>🔒 Essai terminé</h2>
+    <p style="margin:15px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
+    <div style="text-align:left;background:#0f1a14;padding:12px;border-radius:8px;margin:10px 0">
+      <p style="margin:5px 0">1. Envoie 1000F par MoMo au <b>22967863289</b></p>
+      <p style="margin:5px 0">2. Reçois ton code par WhatsApp</p>
+      <p style="margin:5px 0">3. Colle le code ci-dessous</p>
+    </div>
+    <a href="https://wa.me/22967863289?text=Bonjour, je renouvelle Bénéfice Pro pour 1 mois" class="btn btn-whatsapp">💬 Contacter sur WhatsApp</a>
+    <div style="margin-top:15px;padding:12px;background:#0f1a14;border-radius:8px">
+      <label><b>Code de renouvellement</b></label>
+      <input type="text" id="codeInput" placeholder="Ex: CLIENT-11072026" style="margin:8px 0;text-transform:uppercase;text-align:center;font-size:16px;font-weight:700">
+      <button class="btn" onclick="unlock()">✅ Débloquer 1 mois</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ADMIN_CODE = 'ADMIN-BENIN'; // ← TON CODE SECRET À VIE
+const ABO_JOURS = 30;
+let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
+let chartInstance = null;
+let tapCount = 0;
+
+// PANNEAU ADMIN CACHÉ : 5 taps sur le titre = génère code du jour
+document.getElementById('heroTitle').onclick = function(){
+  tapCount++;
+  if(tapCount === 5){
+    let today = new Date();
+    let jj = String(today.getDate()).padStart(2,'0');
+    let mm = String(today.getMonth()+1).padStart(2,'0');
+    let aaaa = today.getFullYear();
+    let codeToday = `CLIENT-${jj}${mm}${aaaa}`;
+    navigator.clipboard.writeText(codeToday);
+    alert(`🔑 Code du jour copié:\n\n${codeToday}\n\nEnvoie ça au client qui paye aujourd'hui.`);
+    tapCount = 0;
+  }
+  setTimeout(()=>tapCount=0, 2000);
+}
+
+function saveDB(){
+  localStorage.setItem('bp_db', JSON.stringify(db));
+  updateDash();
+}
+
+function checkTrial(){
+  let first = localStorage.getItem('bp_first');
+  if(!first){
+    first = Date.now();
+    localStorage.setItem('bp_first', first);
+  }
+  let left = 10 - Math.floor((Date.now() - first) / 86400000);
+  if(left <= 0){
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('lockedApp').classList.remove('hidden');
+    document.getElementById('trialBox').classList.add('hidden');
+    return false;
+  }
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | 1000F/mois`;
+  document.getElementById('mainApp').classList.remove('hidden');
+  document.getElementById('lockedApp').classList.add('hidden');
