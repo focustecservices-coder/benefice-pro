@@ -19,7 +19,6 @@ body{font-family:system-ui;background:var(--bg);color:var(--text);padding:10px;f
 label{display:block;margin-bottom:3px;color:var(--muted);font-size:12px}
 input{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:14px}
 .btn{width:100%;padding:12px;background:var(--accent);color:#001b0d;border:none;border-radius:10px;font-size:14px;font-weight:700;margin:5px 0;cursor:pointer;text-decoration:none;display:block;text-align:center}
-.btn-secondary{background:#1f2d23;color:var(--text)}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-print{background:var(--warn);color:#000}
 .btn-excel{background:#217346;color:#fff}
@@ -38,7 +37,6 @@ h3{font-size:15px;margin-bottom:8px}
 .stat span{font-size:11px;color:var(--muted)}
 #chartBox{height:200px;margin-top:10px}
 .contact-bar{background:#1a2a1f;padding:10px;border-radius:8px;text-align:center;font-size:13px;margin-bottom:8px;border:2px solid var(--accent)}
-.locked-screen{text-align:center}
 @media print{body{background:#fff;color:#000}.no-print{display:none}.card{border:1px solid #ccc}}
 </style>
 </head>
@@ -116,7 +114,7 @@ h3{font-size:15px;margin-bottom:8px}
     </div>
   </div>
 
-  <div id="lockedApp" class="card no-print locked-screen" style="display:none">
+  <div id="lockedApp" class="card no-print" style="display:none;text-align:center">
     <h2>🔒 Essai terminé</h2>
     <p style="margin:15px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
     <div style="text-align:left;background:#0f1a14;padding:12px;border-radius:8px;margin:10px 0">
@@ -208,4 +206,9 @@ function addDepense(){
 }
 
 function renderDepenses(){
-  document.getElementById('depenseList').innerHTML = db.depenses.slice(0,10).map
+  document.getElementById('depenseList').innerHTML = db.depenses.slice(0,10).map(d=>
+    `<div class="item">${d.nom}: <b style="color:var(--danger)">-${d.montant.toLocaleString()} FCFA</b><br><small>${new Date(d.date).toLocaleDateString()}</small></div>`
+  ).join('') || '<p style="color:var(--muted)">Aucune dépense</p>';
+}
+
+function updateStock(){
