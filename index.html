@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui;background:var(--bg);color:var(--text);padding:10px;font-size:14px}
 .container{max-width:600px;margin:auto}
-.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:16px;border-radius:12px;margin-bottom:10px;text-align:center}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:16px;border-radius:12px;margin-bottom:10px;text-align:center;cursor:pointer;user-select:none}
 .card{background:var(--card);border:1px solid #1f2d23;border-radius:12px;padding:14px;margin-bottom:10px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
@@ -42,7 +42,7 @@ h3{font-size:15px;margin-bottom:8px}
 </head>
 <body>
 <div class="container">
-  <div class="hero no-print">
+  <div class="hero no-print" id="heroTitle">
     <h1>Bénéfice Pro Bénin</h1>
     <p>Gestion simple - 1000F/mois</p>
   </div>
@@ -125,17 +125,34 @@ h3{font-size:15px;margin-bottom:8px}
     <a href="https://wa.me/22967863289?text=Bonjour, je renouvelle Bénéfice Pro pour 1 mois" class="btn btn-whatsapp">💬 Contacter sur WhatsApp</a>
     <div style="margin-top:15px;padding:12px;background:#0f1a14;border-radius:8px">
       <label><b>Code de renouvellement</b></label>
-      <input type="text" id="codeInput" placeholder="Ex: BENIN2024" style="margin:8px 0;text-transform:uppercase;text-align:center;font-size:16px;font-weight:700">
+      <input type="text" id="codeInput" placeholder="Ex: CLIENT-11072026" style="margin:8px 0;text-transform:uppercase;text-align:center;font-size:16px;font-weight:700">
       <button class="btn" onclick="unlock()">✅ Débloquer 1 mois</button>
     </div>
   </div>
 </div>
 
 <script>
-const CODE = 'BENIN2024';
+const ADMIN_CODE = 'ADMIN-BENIN'; // ← CHANGE ÇA = ton code secret à vie
 const ABO_JOURS = 30;
 let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
 let chartInstance = null;
+let tapCount = 0;
+
+// PANNEAU ADMIN CACHÉ : 5 taps sur le titre
+document.getElementById('heroTitle').onclick = function(){
+  tapCount++;
+  if(tapCount === 5){
+    let today = new Date();
+    let jj = String(today.getDate()).padStart(2,'0');
+    let mm = String(today.getMonth()+1).padStart(2,'0');
+    let aaaa = today.getFullYear();
+    let codeToday = `CLIENT-${jj}${mm}${aaaa}`;
+    navigator.clipboard.writeText(codeToday);
+    alert(`🔑 Code du jour copié:\n\n${codeToday}\n\nEnvoie ça au client qui paye aujourd'hui.\nValide jusqu'à ce soir minuit.`);
+    tapCount = 0;
+  }
+  setTimeout(()=>tapCount=0, 2000);
+}
 
 function saveDB(){
   localStorage.setItem('bp_db', JSON.stringify(db));
@@ -325,13 +342,37 @@ function exportExcel(){
 
 function unlock(){
   let codeSaisi = document.getElementById('codeInput').value.trim().toUpperCase();
-  if(codeSaisi === CODE){
-    localStorage.setItem('bp_first', Date.now() + ABO_JOURS*86400000);
-    alert('✅ Débloqué pour 1 mois!');
+  
+  // 1. CODE ADMIN
+  if(codeSaisi === ADMIN_CODE){
+    localStorage.setItem('bp_first', Date.now() + 3650*86400000);
+    alert('✅ Mode ADMIN activé à vie');
     location.reload();
-  } else {
-    alert('❌ Code incorrect. Contacte le 22967863289');
+    return;
   }
+  
+  // 2. CODE CLIENT : CLIENT-JJMMAAAA
+  if(codeSaisi.startsWith('CLIENT-') && codeSaisi.length === 15){
+    let datePart = codeSaisi.split('-')[1];
+    let jour = datePart.substr(0,2);
+    let mois = datePart.substr(2,2);
+    let annee = datePart.substr(4,4);
+    
+    let dateCode = new Date(annee, mois-1, jour);
+    if(dateCode.getDate() == jour && dateCode.getMonth() == mois-1){
+      let aujourdhui = new Date();
+      aujourdhui.setHours(0,0,0,0);
+      
+      if(dateCode >= aujourdhui){
+        localStorage.setItem('bp_first', Date.now() + ABO_JOURS*86400000);
+        alert('✅ Débloqué pour 1 mois!');
+        location.reload();
+        return;
+      }
+    }
+  }
+  
+  alert('❌ Code incorrect ou expiré. Contacte le 22967863289');
 }
 
 document.getElementById('dateToday').textContent = new Date().toLocaleDateString('fr-FR');
