@@ -132,13 +132,13 @@ h3{font-size:15px;margin-bottom:8px}
 </div>
 
 <script>
-const ADMIN_CODE = 'ADMIN-BENIN'; // ← TON CODE SECRET À VIE
+const ADMIN_CODE = 'ADMIN-BENIN'; // ← CHANGE ÇA = ton code secret à vie
 const ABO_JOURS = 30;
 let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
 let chartInstance = null;
 let tapCount = 0;
 
-// PANNEAU ADMIN CACHÉ : 5 taps sur le titre = génère code du jour
+// PANNEAU ADMIN CACHÉ : 5 taps sur le titre
 document.getElementById('heroTitle').onclick = function(){
   tapCount++;
   if(tapCount === 5){
@@ -148,7 +148,7 @@ document.getElementById('heroTitle').onclick = function(){
     let aaaa = today.getFullYear();
     let codeToday = `CLIENT-${jj}${mm}${aaaa}`;
     navigator.clipboard.writeText(codeToday);
-    alert(`🔑 Code du jour copié:\n\n${codeToday}\n\nEnvoie ça au client qui paye aujourd'hui.`);
+    alert(`🔑 Code du jour copié:\n\n${codeToday}\n\nEnvoie ça au client qui paye aujourd'hui.\nValide jusqu'à ce soir minuit.`);
     tapCount = 0;
   }
   setTimeout(()=>tapCount=0, 2000);
@@ -342,7 +342,7 @@ function exportExcel(){
 
 function unlock(){
   let codeSaisi = document.getElementById('codeInput').value.trim().toUpperCase();
-
+  
   // 1. CODE ADMIN
   if(codeSaisi === ADMIN_CODE){
     localStorage.setItem('bp_first', Date.now() + 3650*86400000);
@@ -350,19 +350,19 @@ function unlock(){
     location.reload();
     return;
   }
-
+  
   // 2. CODE CLIENT : CLIENT-JJMMAAAA
   if(codeSaisi.startsWith('CLIENT-') && codeSaisi.length === 15){
     let datePart = codeSaisi.split('-')[1];
     let jour = datePart.substr(0,2);
     let mois = datePart.substr(2,2);
     let annee = datePart.substr(4,4);
-
+    
     let dateCode = new Date(annee, mois-1, jour);
     if(dateCode.getDate() == jour && dateCode.getMonth() == mois-1){
       let aujourdhui = new Date();
       aujourdhui.setHours(0,0,0,0);
-
+      
       if(dateCode >= aujourdhui){
         localStorage.setItem('bp_first', Date.now() + ABO_JOURS*86400000);
         alert('✅ Débloqué pour 1 mois!');
@@ -371,7 +371,7 @@ function unlock(){
       }
     }
   }
-
+  
   alert('❌ Code incorrect ou expiré. Contacte le 22967863289');
 }
 
