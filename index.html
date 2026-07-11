@@ -49,14 +49,12 @@ h3{font-size:15px;margin-bottom:8px}
     <p>Gestion simple - 1000F/mois</p>
   </div>
 
-  <!-- CONTACT TOUJOURS VISIBLE -->
   <div class="contact-bar no-print">
     📞 Support WhatsApp : <b>22967863289</b>
   </div>
 
   <div id="trialBox" class="trial no-print"></div>
 
-  <!-- APP PRINCIPALE -->
   <div id="mainApp">
     <div class="card">
       <h3>📊 Aujourd'hui - <span id="dateToday"></span></h3>
@@ -118,7 +116,6 @@ h3{font-size:15px;margin-bottom:8px}
     </div>
   </div>
 
-  <!-- ECRAN BLOQUÉ -->
   <div id="lockedApp" class="card no-print locked-screen" style="display:none">
     <h2>🔒 Essai terminé</h2>
     <p style="margin:15px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
@@ -137,7 +134,7 @@ h3{font-size:15px;margin-bottom:8px}
 </div>
 
 <script>
-const CODE = 'BENIN2024'; // CODE DU MOIS
+const CODE = 'BENIN2024';
 const ABO_JOURS = 30;
 let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
 let chartInstance = null;
@@ -160,4 +157,55 @@ function checkTrial(){
     document.getElementById('trialBox').style.display = 'none';
     return false;
   }
-  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | 1000F/mois`;
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('lockedApp').style.display = 'none';
+  return true;
+}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  ['vente','depense','stock','rapport'].forEach(x=>{
+    document.getElementById(x+'Tab').style.display = x===t?'block':'none';
+  });
+  if(t==='depense') renderDepenses();
+  if(t==='stock') renderStock();
+  if(t==='rapport') {renderRapport();drawChart();}
+}
+
+function addVente(){
+  if(!checkTrial()) return;
+  let v = {
+    nom: document.getElementById('v_nom').value || 'Vente',
+    pv: +document.getElementById('v_pv').value || 0,
+    cr: +document.getElementById('v_cr').value || 0,
+    qt: +document.getElementById('v_qt').value || 1,
+    date: new Date().toISOString()
+  };
+  if(v.pv === 0) return alert('Prix de vente obligatoire');
+  v.benef = (v.pv - v.cr) * v.qt;
+  v.ca = v.pv * v.qt;
+  db.ventes.unshift(v);
+  saveDB();
+  ['v_nom','v_pv','v_cr','v_qt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('v_qt').value=1;
+  alert('✅ Vente: +' + v.benef.toLocaleString() + ' FCFA');
+}
+
+function addDepense(){
+  let d = {
+    nom: document.getElementById('d_nom').value || 'Dépense',
+    montant: +document.getElementById('d_montant').value || 0,
+    date: new Date().toISOString()
+  };
+  if(d.montant === 0) return alert('Montant obligatoire');
+  db.depenses.unshift(d);
+  saveDB();
+  document.getElementById('d_nom').value = '';
+  document.getElementById('d_montant').value = '';
+  renderDepenses();
+}
+
+function renderDepenses(){
+  document.getElementById('depenseList').innerHTML = db.depenses.slice(0,10).map
