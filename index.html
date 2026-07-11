@@ -4,59 +4,115 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#16a34a">
-<title>Bénéfice Pro Bénin - Calculatrice de marge</title>
+<title>Bénéfice Pro Bénin</title>
 <style>
 :root{--bg:#0b1a13;--card:#121f17;--text:#e7f5ec;--muted:#b6c9be;--accent:#16a34a;--accent2:#22c55e}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text);padding:16px}
-.container{max-width:500px;margin:0 auto}
-.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:24px;border-radius:16px;margin-bottom:16px}
+.container{max-width:500px;margin:auto}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#001b0d;padding:24px;border-radius:16px;margin-bottom:16px;text-align:center}
 .hero h1{font-size:28px;margin-bottom:8px}
 .card{background:var(--card);border:1px solid #1f2d23;border-radius:16px;padding:20px;margin-bottom:16px}
 label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
 input{width:100%;padding:14px;border-radius:12px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:16px;margin-bottom:12px}
-.btn{width:100%;padding:16px;background:var(--accent);color:#001b0d;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer}
+.btn{width:100%;padding:16px;background:var(--accent);color:#001b0d;border:none;border-radius:12px;font-size:16px;font-weight:700;margin:8px 0;cursor:pointer;text-decoration:none;display:block;text-align:center}
 .btn:active{transform:scale(0.98)}
+.btn-secondary{background:#1f2d23;color:var(--text)}
 .result{display:none;background:#0f1a14;border:2px solid var(--accent);border-radius:16px;padding:20px;margin-top:16px}
 .result h3{margin-bottom:12px;color:var(--accent)}
-.kpi{display:flex;justify-content:space-between;margin:8px 0;padding:8px 0;border-bottom:1px solid #1f2d23}
+.kpi{display:flex;justify-content:space-between;margin:10px 0;padding:8px 0;border-bottom:1px solid #1f2d23}
 .kpi:last-child{border:none}
 .kpi b{color:var(--accent2);font-size:18px}
 .badge{display:inline-block;background:#052e1a;color:#86efac;padding:4px 12px;border-radius:999px;font-size:12px;margin-top:8px}
+.trial{background:#1a2a1f;border:1px solid #2a3a31;padding:12px;border-radius:12px;text-align:center;font-size:14px;margin-bottom:16px}
+.locked{text-align:center;padding:40px 20px}
+.history-item{background:#0f1a14;padding:12px;border-radius:8px;margin:8px 0;font-size:13px;border-left:3px solid var(--accent)}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="app">
   <div class="hero">
     <h1>Bénéfice Pro Bénin</h1>
-    <p>Calcule ta marge et ton bénéfice en 3 secondes</p>
-    <span class="badge">100% Gratuit au Bénin</span>
+    <p>Calcule ta marge en 3 secondes</p>
+    <span class="badge">Pour entrepreneurs ambitieux</span>
   </div>
 
-  <div class="card">
-    <label>Prix de vente (FCFA)</label>
-    <input type="number" id="pv" placeholder="Ex: 5000">
-    
-    <label>Coût de revient (FCFA)</label>
-    <input type="number" id="cr" placeholder="Ex: 3000">
-    
-    <label>Quantité vendue</label>
-    <input type="number" id="qt" placeholder="Ex: 10" value="1">
-    
-    <button class="btn" onclick="calculer()">Calculer mon bénéfice</button>
+  <div id="trialBox" class="trial"></div>
+
+  <div id="mainApp">
+    <div class="card">
+      <label>Prix de vente (FCFA)</label>
+      <input type="number" id="pv" placeholder="Ex: 5000">
+      
+      <label>Coût de revient (FCFA)</label>
+      <input type="number" id="cr" placeholder="Ex: 3000">
+      
+      <label>Quantité vendue</label>
+      <input type="number" id="qt" placeholder="Ex: 10" value="1">
+      
+      <button class="btn" onclick="calculer()">Calculer mon bénéfice</button>
+      <button class="btn btn-secondary" onclick="installerApp()">📱 Installer sur l'écran</button>
+    </div>
+
+    <div id="res" class="result">
+      <h3>📊 Résultat</h3>
+      <div class="kpi"><span>Bénéfice unitaire</span><b id="bu">0 FCFA</b></div>
+      <div class="kpi"><span>Bénéfice total</span><b id="bt">0 FCFA</b></div>
+      <div class="kpi"><span>Marge</span><b id="marge">0%</b></div>
+      <div class="kpi"><span>Chiffre d'affaires</span><b id="ca">0 FCFA</b></div>
+    </div>
+
+    <div class="card">
+      <h3>📋 Mes 10 derniers calculs</h3>
+      <div id="histList"></div>
+      <button class="btn btn-secondary" onclick="clearHist()">Vider l'historique</button>
+    </div>
   </div>
 
-  <div id="res" class="result">
-    <h3>📊 Résultat</h3>
-    <div class="kpi"><span>Bénéfice unitaire</span><b id="bu">0 FCFA</b></div>
-    <div class="kpi"><span>Bénéfice total</span><b id="bt">0 FCFA</b></div>
-    <div class="kpi"><span>Marge</span><b id="marge">0%</b></div>
-    <div class="kpi"><span>Chiffre d'affaires</span><b id="ca">0 FCFA</b></div>
+  <div id="lockedApp" class="locked" style="display:none">
+    <h2>🔒 Essai terminé</h2>
+    <p>Merci d'avoir testé Bénéfice Pro pendant 10 jours.</p>
+    <p style="margin:20px 0">Active ton abonnement pour continuer :</p>
+    <a href="https://wa.me/22967863289?text=Bonjour, je veux activer Bénéfice Pro après mon essai de 10 jours" class="btn">💬 Activer sur WhatsApp</a>
+    
+    <div class="card" style="margin-top:20px">
+      <h3>🔑 J'ai un code d'activation</h3>
+      <input type="text" id="codeInput" placeholder="Entre ton code ici">
+      <button class="btn" onclick="unlock()">Débloquer pour 1 an</button>
+    </div>
   </div>
 </div>
 
 <script>
+const TRIAL_DAYS = 10;
+const SECRET_CODE = 'BENIN2024'; // Change ce code quand tu veux
+let installPrompt = null;
+
+// GESTION ESSAI 10 JOURS
+function checkTrial(){
+  let first = localStorage.getItem('bp_first');
+  if(!first){ 
+    first = Date.now(); 
+    localStorage.setItem('bp_first', first); 
+  }
+  let days = Math.floor((Date.now() - first) / 86400000);
+  let left = TRIAL_DAYS - days;
+  
+  if(left <= 0){
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('lockedApp').style.display = 'block';
+    document.getElementById('trialBox').style.display = 'none';
+    return false;
+  } else {
+    document.getElementById('trialBox').innerHTML = `⏳ Essai gratuit : <b>${left} jour(s) restant(s)</b> sur 10`;
+    return true;
+  }
+}
+
+// CALCUL + HISTORIQUE
 function calculer(){
+  if(!checkTrial()) return;
+  
   let pv = parseFloat(document.getElementById('pv').value) || 0;
   let cr = parseFloat(document.getElementById('cr').value) || 0;
   let qt = parseFloat(document.getElementById('qt').value) || 1;
@@ -72,7 +128,6 @@ function calculer(){
   document.getElementById('marge').textContent = marge + '%';
   document.getElementById('res').style.display = 'block';
   document.getElementById('res').scrollIntoView({behavior:'smooth'});
-}
-</script>
-</body>
-</html>
+  
+  // Sauve historique
+  let hist = JSON.parse(localStorage.getItem('bp_hist')
