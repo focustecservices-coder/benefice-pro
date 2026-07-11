@@ -16,15 +16,14 @@ body{font-family:system-ui;background:var(--bg);color:var(--text);padding:10px;f
 .card{background:var(--card);border:1px solid #1f2d23;border-radius:12px;padding:14px;margin-bottom:10px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-label{display:block;margin-bottom:3px;color:var(--muted);font-size:12px}
-input{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:14px}
+input{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3a31;background:#0f1a14;color:var(--text);font-size:14px;margin:5px 0}
 .btn{width:100%;padding:12px;background:var(--accent);color:#001b0d;border:none;border-radius:10px;font-size:14px;font-weight:700;margin:5px 0;cursor:pointer;text-decoration:none;display:block;text-align:center}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-print{background:var(--warn);color:#000}
 .btn-excel{background:#217346;color:#fff}
 .btn-whatsapp{background:#25D366;color:#fff}
 .tabs{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto}
-.tab{padding:8px 12px;background:#1f2d23;border:none;border-radius:8px;color:var(--muted);font-size:13px;white-space:nowrap}
+.tab{padding:8px 12px;background:#1f2d23;border:none;border-radius:8px;color:var(--muted);font-size:13px;white-space:nowrap;cursor:pointer}
 .tab.active{background:var(--accent);color:#001b0d}
 .kpi{display:flex;justify-content:space-between;margin:6px 0;padding:5px 0;border-bottom:1px solid #1f2d23}
 .kpi b{color:var(--accent2)}
@@ -37,6 +36,7 @@ h3{font-size:15px;margin-bottom:8px}
 .stat span{font-size:11px;color:var(--muted)}
 #chartBox{height:200px;margin-top:10px}
 .contact-bar{background:#1a2a1f;padding:10px;border-radius:8px;text-align:center;font-size:13px;margin-bottom:8px;border:2px solid var(--accent)}
+.hidden{display:none!important}
 @media print{body{background:#fff;color:#000}.no-print{display:none}.card{border:1px solid #ccc}}
 </style>
 </head>
@@ -69,13 +69,13 @@ h3{font-size:15px;margin-bottom:8px}
     </div>
 
     <div class="tabs no-print">
-      <button class="tab active" onclick="showTab('vente')">Vente</button>
-      <button class="tab" onclick="showTab('depense')">Dépense</button>
-      <button class="tab" onclick="showTab('stock')">Stock</button>
-      <button class="tab" onclick="showTab('rapport')">Rapport</button>
+      <button class="tab active" onclick="showTab('vente',this)">Vente</button>
+      <button class="tab" onclick="showTab('depense',this)">Dépense</button>
+      <button class="tab" onclick="showTab('stock',this)">Stock</button>
+      <button class="tab" onclick="showTab('rapport',this)">Rapport</button>
     </div>
 
-    <div id="venteTab" class="card">
+    <div id="venteTab" class="card tab-content">
       <h3>💰 Nouvelle vente</h3>
       <input type="text" id="v_nom" placeholder="Produit vendu">
       <div class="grid2">
@@ -86,7 +86,7 @@ h3{font-size:15px;margin-bottom:8px}
       <button class="btn" onclick="addVente()">Enregistrer la vente</button>
     </div>
 
-    <div id="depenseTab" class="card" style="display:none">
+    <div id="depenseTab" class="card tab-content hidden">
       <h3>💸 Nouvelle dépense</h3>
       <input type="text" id="d_nom" placeholder="Ex: Loyer, Transport">
       <input type="number" id="d_montant" placeholder="Montant FCFA">
@@ -94,7 +94,7 @@ h3{font-size:15px;margin-bottom:8px}
       <div id="depenseList" style="margin-top:10px"></div>
     </div>
 
-    <div id="stockTab" class="card" style="display:none">
+    <div id="stockTab" class="card tab-content hidden">
       <h3>📦 Gestion stock</h3>
       <input type="text" id="s_nom" placeholder="Nom produit">
       <div class="grid2">
@@ -105,7 +105,7 @@ h3{font-size:15px;margin-bottom:8px}
       <div id="stockList" style="margin-top:10px"></div>
     </div>
 
-    <div id="rapportTab" class="card" style="display:none">
+    <div id="rapportTab" class="card tab-content hidden">
       <h3>📄 Rapport du mois</h3>
       <div id="chartBox"><canvas id="chartVentes"></canvas></div>
       <div id="rapportContent"></div>
@@ -114,7 +114,7 @@ h3{font-size:15px;margin-bottom:8px}
     </div>
   </div>
 
-  <div id="lockedApp" class="card no-print" style="display:none;text-align:center">
+  <div id="lockedApp" class="card no-print hidden" style="text-align:center">
     <h2>🔒 Essai terminé</h2>
     <p style="margin:15px 0"><b>Abonnement : 1000 FCFA / mois</b></p>
     <div style="text-align:left;background:#0f1a14;padding:12px;border-radius:8px;margin:10px 0">
@@ -150,23 +150,22 @@ function checkTrial(){
   }
   let left = 10 - Math.floor((Date.now() - first) / 86400000);
   if(left <= 0){
-    document.getElementById('mainApp').style.display = 'none';
-    document.getElementById('lockedApp').style.display = 'block';
-    document.getElementById('trialBox').style.display = 'none';
+    document.getElementById('mainApp').classList.add('hidden');
+    document.getElementById('lockedApp').classList.remove('hidden');
+    document.getElementById('trialBox').classList.add('hidden');
     return false;
   }
   document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | 1000F/mois`;
-  document.getElementById('mainApp').style.display = 'block';
-  document.getElementById('lockedApp').style.display = 'none';
+  document.getElementById('mainApp').classList.remove('hidden');
+  document.getElementById('lockedApp').classList.add('hidden');
   return true;
 }
 
-function showTab(t){
+function showTab(t,btn){
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  event.target.classList.add('active');
-  ['vente','depense','stock','rapport'].forEach(x=>{
-    document.getElementById(x+'Tab').style.display = x===t?'block':'none';
-  });
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(x=>x.classList.add('hidden'));
+  document.getElementById(t+'Tab').classList.remove('hidden');
   if(t==='depense') renderDepenses();
   if(t==='stock') renderStock();
   if(t==='rapport') {renderRapport();drawChart();}
@@ -212,3 +211,133 @@ function renderDepenses(){
 }
 
 function updateStock(){
+  let nom = document.getElementById('s_nom').value;
+  if(!nom) return alert('Nom du produit obligatoire');
+  if(!db.stock[nom]) db.stock[nom] = 0;
+  db.stock[nom] += (+document.getElementById('s_entree').value || 0);
+  db.stock[nom] -= (+document.getElementById('s_sortie').value || 0);
+  saveDB();
+  renderStock();
+  ['s_nom','s_entree','s_sortie'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderStock(){
+  document.getElementById('stockList').innerHTML = Object.entries(db.stock).map(([n,q])=>
+    `<div class="item">${n}: <b>${q} unités</b></div>`
+  ).join('') || '<p style="color:var(--muted)">Stock vide</p>';
+}
+
+function updateDash(){
+  let now = new Date();
+  let today = now.toDateString();
+  let month = now.getMonth();
+  let year = now.getFullYear();
+
+  let d_v = db.ventes.filter(v=>new Date(v.date).toDateString()===today);
+  let d_b = d_v.reduce((s,v)=>s+v.benef,0);
+  let d_c = d_v.reduce((s,v)=>s+v.ca,0);
+  let d_dp = db.depenses.filter(d=>new Date(d.date).toDateString()===today).reduce((s,d)=>s+d.montant,0);
+
+  let m_b = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===month&&d.getFullYear()===year}).reduce((s,v)=>s+v.benef,0);
+  let a_b = db.ventes.filter(v=>new Date(v.date).getFullYear()===year).reduce((s,v)=>s+v.benef,0);
+
+  document.getElementById('d_ventes').textContent = d_c.toLocaleString();
+  document.getElementById('d_benef').textContent = d_b.toLocaleString();
+  document.getElementById('d_depens').textContent = d_dp.toLocaleString();
+  document.getElementById('m_benef').textContent = m_b.toLocaleString();
+  document.getElementById('a_benef').textContent = a_b.toLocaleString();
+  document.getElementById('nb_ventes').textContent = db.ventes.length;
+}
+
+function renderRapport(){
+  let m = new Date().getMonth();
+  let y = new Date().getFullYear();
+  let mv = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===m&&d.getFullYear()===y});
+  let md = db.depenses.filter(d=>{let dt=new Date(d.date);return dt.getMonth()===m&&dt.getFullYear()===y});
+
+  let ca = mv.reduce((s,v)=>s+v.ca,0);
+  let benef = mv.reduce((s,v)=>s+v.benef,0);
+  let dep = md.reduce((s,d)=>s+d.montant,0);
+  let net = benef - dep;
+
+  document.getElementById('rapportContent').innerHTML = `
+    <h3>Rapport ${new Date().toLocaleString('fr-FR',{month:'long',year:'numeric'})}</h3>
+    <div class="kpi"><span>Chiffre d'affaires</span><b>${ca.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Bénéfice brut</span><b>${benef.toLocaleString()} FCFA</b></div>
+    <div class="kpi danger"><span>Total dépenses</span><b>${dep.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span><b>BÉNÉFICE NET</b></span><b>${net.toLocaleString()} FCFA</b></div>
+    <div class="kpi"><span>Nombre de ventes</span><b>${mv.length}</b></div>
+  `;
+}
+
+function drawChart(){
+  if(chartInstance) chartInstance.destroy();
+  let ctx = document.getElementById('chartVentes');
+  let m = new Date().getMonth();
+  let y = new Date().getFullYear();
+  let days = new Date(y, m+1, 0).getDate();
+  let data = Array(days).fill(0);
+
+  db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===m&&d.getFullYear()===y}).forEach(v=>{
+    data[new Date(v.date).getDate()-1] += v.ca;
+  });
+
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map((_,i)=>i+1),
+      datasets: [{
+        label: 'Ventes FCFA',
+        data: data,
+        borderColor: '#16a34a',
+        backgroundColor: 'rgba(22,163,74,0.2)',
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {legend: {display: false}}
+    }
+  });
+}
+
+function exportExcel(){
+  let wb = XLSX.utils.book_new();
+  let ventesWS = XLSX.utils.json_to_sheet(db.ventes.map(v=>({
+    Date: new Date(v.date).toLocaleDateString(),
+    Produit: v.nom,
+    Prix: v.pv,
+    Coût: v.cr,
+    Qté: v.qt,
+    CA: v.ca,
+    Bénéfice: v.benef
+  })));
+  XLSX.utils.book_append_sheet(wb, ventesWS, "Ventes");
+  let depWS = XLSX.utils.json_to_sheet(db.depenses.map(d=>({
+    Date: new Date(d.date).toLocaleDateString(),
+    Dépense: d.nom,
+    Montant: d.montant
+  })));
+  XLSX.utils.book_append_sheet(wb, depWS, "Dépenses");
+  XLSX.writeFile(wb, `BeneficePro_${new Date().toISOString().split('T')[0]}.xlsx`);
+}
+
+function unlock(){
+  let codeSaisi = document.getElementById('codeInput').value.trim().toUpperCase();
+  if(codeSaisi === CODE){
+    localStorage.setItem('bp_first', Date.now() + ABO_JOURS*86400000);
+    alert('✅ Débloqué pour 1 mois!');
+    location.reload();
+  } else {
+    alert('❌ Code incorrect. Contacte le 22967863289');
+  }
+}
+
+document.getElementById('dateToday').textContent = new Date().toLocaleDateString('fr-FR');
+checkTrial();
+updateDash();
+renderDepenses();
+</script>
+</body>
+</html>
