@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bénéfice Pro Bénin V3.2</title>
+<meta name="theme-color" content="#16a34a">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQsOpbsOpZmljZSBQcm8gQsOpbmluIiwiZGlyZWN0aW9uIjoibHRyIiwibGFuZyI6ImZyIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmZmZmZmYiLCJ0aGVtZV9jb2xvciI6IiMxNmEzNGEiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsInNob3J0X25hbWUiOiJCUEIiLCJzdGFydF91cmwiOiIuL2luZGV4Lmh0bWwiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zUnZjbmt0WlhOMExtNWxkQzlvZVQxbUwwcFRpbVJrVUdWNVVHMW9MelpNZVRwWU1XUXRVMlJEVGxKaWFHTXpNMVJhZVdaMlVHMUdSM2xpYUhCM1p6Tk1WVlphZFRWVVFuZzVNekpDV1RaWk1FMWFWbWhqTVROa1p6TlNRVkE1V2tkWlNqbGhSbXhNV1ZaQ1RGaElXakExVjFKdFZXd3dXakpWZW5wR1UwSlFVM1pLV1dWb1ZGRnBVR1poTTNkS1IxWmtWbFpXYkdKVmJEQlpWRlJXWVZjNWVWaHJSbWhvVnpGSU1YcElWbFpqYjJKWlFUQlJVRk5yWTI5V1NqbFphM0F3V2toU1JsWjNia2hLVDBOWVZGUlpXak5hZW1sSFNrVklhbHBYWldNMk9VZDJNR0Z1V2tkV2JrWlJWakZPVm10M1drbGlTMEpUVldwQlRrbHVWbU5XYlZab1JtdHpZVlZhV1d4d1RGVnVla3BYV1RKR1ZFazNWM3B0ZVZka1Ywb3hZekJrYVVGdFNrWlZNWE5HUlhSV1ZFazFWM1J0ZVdka1Ywc3dNR2x6U1V4S1UyMDFXbmxpY1hCRlVqQk9XRk5zVG5aU1NrVlJVbFp3Y1ZsR1lWY3dUVlJzVjJsSlZrcDBRM0JVVW5wVFZrZDRWR2swUlZaa1ZtdHNXbGhDYUZwV1VXTjFVMWR5TlU1cFVqQjBTRlUxV2t0YVZXaDFVak5DVW1reFZrb3hXVmRzV2xaa1ZsSklTbFpTVFZSVmVuWjJWV3h0V2xka1VsWktUMjVvVGxWRlVrdFljR3BKVldsTFpFaElVMjVhVkVWNlYzaE9SRlpvVjNaT1YydHdVblZoUjJGWk1WVkVSbWxIVjJ0cFVrZHdUbFJKVG1wT1YydGFWbHBEVldoVmJURjVXbFJqZW14SVdtaHlWMVUxVVc5WlUwMUhWbkJRV2xaRFZUa3llbEpsVm14VlVqRjVPVWRYV1ZSUmVWaE9UVWxzUm5OV1pVVlNNWE5QVGt0TFUyNUNUblJNV1ZaSFZXaDFTRlp1U2pKVmJHaG9Wa3d5Y2xsVVZIZFZhekUwVVZWV2FHbEpVbmxXU0hKTFRVVjNkMlJPV1hkcldWaE9WREJ1UzNCVVJtRnJSMjVhV1d4cVFtNU9RVmRVWVZaT1RGVnZVbFJRV1U5TVVraENRVzVXYlZWdVRXbGpUVWxIVlcxQ1VVMHdRbWxVVkZSS1VrUldVMmRLZW1kYVYxcEdVblpXV0dKVlZVWkJPV1pQV1ZSR1QzWm5UbFZTVkVwS1RWUk9lRTFKVFdwTFMxZGFWbFZuVUhwV1NGZDRUVz09IiwiZGVzY3JpcHRpb24iOiJUZXMgY2FmZiBkZSBjYWlzc2UgaW50ZWxsaWdlbnQifV0sInNjb3BlIjoiLi8ifQ==">
+<style>
+:root{--green:#16a34a;--red:#dc2626;--orange:#ea580c;--blue:#2563eb;--gray:#f3f4f6;--dark:#1f2937}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
+body{background:#f9fafb;color:var(--dark);font-size:16px}
+.hidden{display:none!important}
+.container{max-width:480px;margin:0 auto;padding:16px}
+h1{font-size:24px;margin-bottom:4px;user-select:none}
+h2{font-size:20px;margin:24px 0 12px}
+h3{font-size:18px;margin:16px 0 8px}
+.subtitle{color:#6b7280;margin-bottom:16px}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;min-height:48px}
+.btn-primary{background:var(--green);color:white}
+.btn-secondary{background:var(--gray);color:var(--dark)}
+.btn-danger{background:var(--red);color:white}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.card{background:white;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.input-group{margin-bottom:12px}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:4px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:16px}
+input[type="checkbox"]{width:auto;margin-right:8px}
+.tabs{display:flex;background:var(--gray);border-radius:8px;padding:4px;margin-bottom:16px}
+.tab{flex:1;padding:10px;text-align:center;border-radius:6px;cursor:pointer;font-weight:500}
+.tab.active{background:white;box-shadow:0 1px 2px rgba(0,0,0,0.1)}
+.benefit-net{font-size:32px;font-weight:700;text-align:center;margin:16px 0}
+.benefit-net.positive{color:var(--green)}
+.benefit-net.negative{color:var(--red)}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;font-size:14px}
+.grid-3 b{display:block;font-size:18px}
+.list-item{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--gray)}
+.list-item:last-child{border:none}
+.badge{padding:4px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.badge-green{background:#dcfce7;color:#166534}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-orange{background:#ffedd5;color:#9a3412}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal-content{background:white;border-radius:12px;padding:24px;max-width:400px;width:100%}
+.banner{padding:12px;border-radius:8px;margin-bottom:16px;font-weight:500}
+.banner-yellow{background:#fef9c3;color:#854d0e}
+.banner-orange{background:#ffedd5;color:#9a3412}
+.banner-red{background:#fee2e2;color:#991b1b}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:8px;text-align:left;border-bottom:1px solid var(--gray)}
+td:last-child,th:last-child{text-align:right}
+#vitrine{padding:24px 16px;text-align:center}
+#vitrine ul{text-align:left;max-width:320px;margin:16px auto;list-style:none}
+#vitrine li{margin:8px 0}
+#app{display:none}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.icon-btn{background:none;border:none;font-size:24px;cursor:pointer}
+.admin-bar{background:var(--blue);color:white;padding:8px;text-align:center;font-weight:600}
+@media print{
+body{background:white}
+.no-print{display:none!important}
+.card{box-shadow:none;border:1px solid #ccc}
+.btn{display:none}
+}
+</style>
+</head>
+<body>
+<div id="admin-bar" class="admin-bar hidden no-print">MODE ADMIN - <button onclick="exitAdmin()" style="background:white;color:var(--blue);border:none;padding:4px 8px;border-radius:4px;cursor:pointer">Quitter</button></div>
+
+<div id="vitrine">
+<div class="container">
+<h1 id="logo">Bénéfice Pro Bénin</h1>
+<p class="subtitle">Ton coffre-fort de caisse</p>
+<p><b>1000 FCFA/mois.</b> Tes données restent à toi, pour toujours. Imprime ton bilan quand tu veux.</p>
+<ul>
+<li>?? Bénéfice NET auto : Ventes - Achats - Charges, même hors ligne</li>
+<li>?? Tes données = ton téléphone. Zéro cloud. Export/Impression illimités</li>
+<li>?? Bilan comptable PDF 1-clic + Rappels Loyer/Electricité auto</li>
+</ul>
+<p style="margin:16px 0;font-size:14px;color:#6b7280">Utilisé par 300+ boutiques Cotonou</p>
+<button class="btn btn-primary" onclick="startApp()">? Installer l'app - 10 jours gratuit</button>
+<a href="https://wa.me/2290167863289" class="btn btn-secondary" style="margin-top:12px">WhatsApp Support : +229 01 67 86 32 89</a>
+</div>
+</div>
+
+<div id="app">
+<div class="container">
+<div id="alerts"></div>
+<div class="header">
+<h1 id="app-title">Bénéfice Pro</h1>
+<button class="icon-btn no-print" onclick="showPage('settings')">??</button>
+</div>
+<div id="page-dashboard"></div>
+<div id="page-ventes" class="hidden"></div>
+<div id="page-charges" class="hidden"></div>
+<div id="page-clients" class="hidden"></div>
+<div id="page-bilan" class="hidden"></div>
+<div id="page-settings" class="hidden"></div>
+<div id="page-admin" class="hidden"></div>
+<div class="tabs no-print" style="position:fixed;bottom:0;left:0;right:0;margin:0;border-radius:0">
+<div class="tab active" onclick="showPage('dashboard')">??<br><small>Accueil</small></div>
+<div class="tab" onclick="showPage('ventes')">??<br><small>Ventes</small></div>
+<div class="tab" onclick="showPage('charges')">??<br><small>Charges</small></div>
+<div class="tab" onclick="showPage('clients')">??<br><small>Clients</small></div>
+<div class="tab" onclick="showPage('bilan')">??<br><small>Bilan</small></div>
+<div id="tab-admin" class="tab hidden" onclick="showPage('admin')">??<br><small>Admin</small></div>
+</div>
+<div style="height:80px"></div>
+</div>
+</div>
+
+<div id="modal" class="modal hidden"></div>
+
+<script>
+// CONFIG - CHANGE TON CODE ADMIN ICI AVANT DE DÉPLOYER
+const ADMIN_PIN = "2290";
+// FIN CONFIG
+
+if('serviceWorker' in navigator){
+const sw = `self.addEventListener('install',e=>{e.waitUntil(caches.open('bpb-v3.2').then(c=>c.add('/')))});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`;
+const blob = new Blob([sw],{type:'text/javascript'});
+navigator.serviceWorker.register(URL.createObjectURL(blob));
+}
+
+const DB_KEY = 'benefice_pro_v8_coffre';
+let DB = {meta:{},ventes:[],charges:[],clients:[],config:{},licences:[],adminLogs:[]};
+let CURRENT_PAGE = 'dashboard';
+let CURRENT_VIEW = 'jour';
+let IS_PRO = false;
+let IS_ADMIN = false;
+let logoTaps = 0;
+let footerTaps = 0;
+
+document.getElementById('logo').onclick = () => {
+logoTaps++;
+if(logoTaps >= 5){
+logoTaps = 0;
+const pin = prompt('Code PIN Panique :');
+if(pin && pin.length === 4){
+DB.config.userPinHash = btoa(pin);
+saveDB();
+alert('PIN Panique activé. 5 taps sur solde pour cacher montants.');
+}
+}
+setTimeout(()=>{logoTaps=0}, 2000);
+};
+
+function initAdminAccess(){
+const footer = document.createElement('div');
+footer.style.cssText = 'text-align:center;font-size:12px;color:#9ca3af;margin-top:24px;padding:16px';
+footer.innerHTML = 'Bénéfice Pro Bénin V3.2';
+footer.onclick = () => {
+footerTaps++;
+if(footerTaps >= 7){
+footerTaps = 0;
+if(!DB.config.adminPinHash){
+const newPin = prompt('Crée ton mot de passe Admin. Min 6 caractères :');
+if(newPin && newPin.length >= 6){
+DB.config.adminPinHash = btoa(newPin);
+saveDB();
+alert('Mot de passe Admin créé. Retiens-le bien.');
+enterAdmin();
+}
+} else {
+const pin = prompt('Mot de passe Admin :');
+if(btoa(pin) === DB.config.adminPinHash){
+enterAdmin();
+} else {
+alert('Mot de passe incorrect');
+}
+}
+}
+setTimeout(()=>{footerTaps=0}, 2000);
+};
+document.querySelector('#vitrine.container').appendChild(footer);
+}
+
+function enterAdmin(){
+IS_ADMIN = true;
+document.getElementById('admin-bar').classList.remove('hidden');
+document.getElementById('tab-admin').classList.remove('hidden');
+showPage('admin');
+}
+
+function exitAdmin(){
+IS_ADMIN = false;
+document.getElementById('admin-bar').classList.add('hidden');
+document.getElementById('tab-admin').classList.add('hidden');
+showPage('dashboard');
+}
+
+function loadDB(){
+const raw = localStorage.getItem(DB_KEY);
+if(raw){ DB = JSON.parse(raw); }
+else{
+DB.meta = {deviceId: "BPB-" + crypto.randomUUID().slice(0,8).toUpperCase() + "-" + Date.now().toString(36).toUpperCase(), version:"3.2", created:new Date().toISOString()};
+DB.config = {plan:"essai", activatedOn:null, expires:new Date(Date.now()+10*86400000).toISOString(), objectifMensuel:0, adminPinHash:null, userPinHash:null};
+DB.adminLogs = [];
+saveDB();
+}
+checkPro();
+}
+
+function saveDB(){
+localStorage.setItem(DB_KEY, JSON.stringify(DB));
+}
+
+function checkPro(){
+const now = new Date();
+const activeLicence = DB.licences.find(l => l.active && new Date(l.expiresOn) > now);
+IS_PRO =!!activeLicence || (DB.config.plan === 'essai' && new Date(DB.config.expires) > now);
+if(!activeLicence && DB.config.plan === 'pro') DB.config.plan = 'essai';
+}
+
+function uid(){ return crypto.randomUUID(); }
+function fmt(n){ return new Intl.NumberFormat('fr-FR').format(Math.round(n)); }
+function todayISO(){ return new Date().toISOString().split('T')[0]; }
+
+function startApp(){
+document.getElementById('vitrine').style.display='none';
+document.getElementById('app').style.display='block';
+loadDB();
+checkAlerts();
+showPage('dashboard');
+initAdminAccess();
+}
+
+function showPage(page){
+CURRENT_PAGE = page;
+document.querySelectorAll('[id^=page-]').forEach(el=>el.classList.add('hidden'));
+document.getElementById('page-'+page).classList.remove('hidden');
+document.querySelectorAll('.tab').forEach((el,i)=>{
+if(i<5) el.classList.toggle('active', ['dashboard','ventes','charges','clients','bilan'][i]===page);
+if(i===5) el.classList.toggle('active', page==='admin');
+});
+render();
+}
+
+function render(){
+if(CURRENT_PAGE==='dashboard') renderDashboard();
+if(CURRENT_PAGE==='ventes') renderVentes();
+if(CURRENT_PAGE==='charges') renderCharges();
+if(CURRENT_PAGE==='clients') renderClients();
+if(CURRENT_PAGE==='bilan') renderBilan();
+if(CURRENT_PAGE==='settings') renderSettings();
+if(CURRENT_PAGE==='admin') renderAdmin();
+checkAlerts();
+}
+
+function checkAlerts(){
+const alerts = document.getElementById('alerts');
+alerts.innerHTML = '';
+if(!IS_PRO &&!IS_ADMIN){
+const days = Math.ceil((new Date(DB.config.expires)-new Date())/86400000);
+if(days<=0){
+alerts.innerHTML = `<div class="banner banner-red">Essai 10 jours terminé. Activez Pro 1000F/mois pour continuer. <button onclick="showPage('settings')">Activer</button></div>`;
+} else if(days<=1){
+alerts.innerHTML = `<div class="banner banner-red">Essai expire demain!</div>`;
+} else if(days<=5){
+alerts.innerHTML = `<div class="banner banner-orange">Essai expire dans ${days} jours. <button onclick="showPage('settings')">Renouveler</button></div>`;
+}
+}
+}
+
+function showModal(title, content){
+document.getElementById('modal').innerHTML = `<div class="modal-content"><h3>${title}</h3>${content}</div>`;
+document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal(){ document.getElementById('modal').classList.add('hidden'); }
+
+function calcBenefice(period){
+const now = new Date();
+let start, end;
+if(period==='jour'){
+start = new Date(now.setHours(0,0,0,0));
+end = new Date(now.setHours(23,59,59,999));
+} else if(period==='mois'){
+start = new Date(now.getFullYear(), now.getMonth(), 1);
+end = new Date(now.getFullYear(), now.getMonth()+1, 0, 23, 59, 59);
+} else {
+start = new Date(now.getFullYear(), 0, 1);
+end = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+}
+const ventes = DB.ventes.filter(v=>!v.deleted && new Date(v.date)>=start && new Date(v.date)<=end);
+const charges = DB.charges.filter(c=>!c.deleted && new Date(c.date)>=start && new Date(c.date)<=end);
+const ca = ventes.reduce((s,v)=>s+v.montant,0);
+const couts = ventes.reduce((s,v)=>s+v.cout,0);
+const totalCharges = charges.reduce((s,c)=>s+c.montant,0);
+return {ca, couts, margeBrute: ca-couts, totalCharges, beneficeNet: ca-couts-totalCharges, ventes, charges};
+}
+
+function renderDashboard(){
+const views = ['jour','mois','annee'];
+const b = calcBenefice(CURRENT_VIEW);
+const el = document.getElementById('page-dashboard');
+el.innerHTML = `
+<div class="tabs no-print">
+${views.map(v=>`<div class="tab ${v===CURRENT_VIEW?'active':''}" onclick="CURRENT_VIEW='${v}';render()">${v.charAt(0).toUpperCase()+v.slice(1)}</div>`).join('')}
+</div>
+<div class="card">
+<p style="text-align:center;color:#6b7280">Bénéfice NET ${CURRENT_VIEW==="jour"?"Aujourd'hui":CURRENT_VIEW==="mois"?"du Mois":"de l'Année"}</p>
+<div class="benefit-net ${b.beneficeNet>=0?'positive':'negative'}">${fmt(b.beneficeNet)} FCFA</div>
+<div class="grid-3">
+<div><b>${fmt(b.margeBrute)}</b><span>Marge Brute</span></div>
+<div><b>${fmt(b.ca)}</b><span>CA</span></div>
+<div><b>${fmt(b.totalCharges)}</b><span>Charges</span></div>
+</div>
+<button class="btn btn-secondary no-print" style="margin-top:12px" onclick="window.print()">??? Imprimer cette page</button>
+</div>
+<div class="card">
+<h3>Dernières ventes</h3>
+${b.ventes.slice(-5).reverse().map(v=>`<div class="list-item"><span>${DB.clients.find(c=>c.id===v.clientId)?.nom||'Client'} - ${v.note||''}</span><b>+${fmt(v.montant-v.cout)}F</b></div>`).join('')||'<p>Aucune vente</p>'}
+</div>
+`;
+}
+
+function renderVentes(){
+const el = document.getElementById('page-ventes');
+const todayVentes = DB.ventes.filter(v=>!v.deleted && v.date.startsWith(todayISO()));
+el.innerHTML = `
+<button class="btn btn-primary no-print" onclick="addVente()" ${!IS_PRO&&!IS_ADMIN?'disabled':''}>+ Nouvelle Vente</button>
+<div class="card" style="margin-top:16px">
+<h3>Ventes du jour</h3>
+${todayVentes.map(v=>`<div class="list-item"><div><b>${DB.clients.find(c=>c.id===v.clientId)?.nom}</b><br><small>${v.note||''}</small></div><div><b>${fmt(v.montant)}F</b><br><small style="color:var(--green)">+${fmt(v.montant-v.cout)}F</small></div></div>`).join('')||'<p>Aucune vente aujourd\'hui</p>'}
+</div>
+<button class="btn btn-secondary no-print" onclick="window.print()">??? Imprimer ventes du jour</button>
+`;
+}
+
+function addVente(){
+if(!IS_PRO &&!IS_ADMIN) return alert('Essai expiré. Activez Pro.');
+if(DB.clients.length===0) return alert('Ajoutez un client d\'abord dans l\'onglet Clients');
+showModal('Nouvelle Vente', `
+<div class="input-group"><label>Client</label><select id="v-client">${DB.clients.map(c=>`<option value="${c.id}">${c.nom}</option>`).join('')}</select></div>
+<div class="input-group"><label>Montant vente FCFA</label><input type="number" id="v-montant" placeholder="50000"></div>
+<div class="input-group"><label>Coût achat FCFA</label><input type="number" id="v-cout" placeholder="40000"></div>
+<div class="input-group"><label>Note</label><input type="text" id="v-note" placeholder="Tecno Spark 10"></div>
+<div class="input-group"><label><input type="checkbox" id="v-paye" checked> Payé</label></div>
+<button class="btn btn-primary" onclick="saveVente()">Enregistrer</button>
+<button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+`);
+}
+
+function saveVente(){
+const vente = {
+id: uid(), clientId: document.getElementById('v-client').value,
+montant: parseFloat(document.getElementById('v-montant').value)||0,
+cout: parseFloat(document.getElementById('v-cout').value)||0,
+note: document.getElementById('v-note').value, date: new Date().toISOString(),
+paye: document.getElementById('v-paye').checked, deleted: false
+};
+DB.ventes.push(vente);
+saveDB(); closeModal(); render();
+}
+
+function renderCharges(){
+const el = document.getElementById('page-charges');
+el.innerHTML = `
+<button class="btn btn-primary no-print" onclick="addCharge()" ${!IS_PRO&&!IS_ADMIN?'disabled':''}>+ Nouvelle Charge</button>
+<div class="card" style="margin-top:16px">
+<h3>Charges récentes</h3>
+${DB.charges.filter(c=>!c.deleted).slice(-10).reverse().map(c=>`<div class="list-item"><div><b>${c.type}</b>${c.recurrente?'<span class="badge badge-orange">Mensuel</span>':''}<br><small>${c.note||''}</small></div><b class="negative">-${fmt(c.montant)}F</b></div>`).join('')||'<p>Aucune charge</p>'}
+</div>
+`;
+}
+
+function addCharge(){
+if(!IS_PRO &&!IS_ADMIN) return alert('Essai expiré. Activez Pro.');
+showModal('Nouvelle Charge', `
+<div class="input-group"><label>Type</label><select id="c-type"><option>Électricité CIE</option><option>Eau SONEB</option><option>Loyer</option><option>Salaire</option><option>Déplacement</option><option>Impôt</option><option>Internet</option><option>Marchandise perdue</option><option>Autre</option></select></div>
+<div class="input-group"><label>Montant FCFA</label><input type="number" id="c-montant" placeholder="50000"></div>
+<div class="input-group"><label>Note</label><input type="text" id="c-note"></div>
+<div class="input-group"><label><input type="checkbox" id="c-rec" onchange="document.getElementById('c-jour').parentElement.style.display=this.checked?'block':'none'"> Charge récurrente chaque mois</label></div>
+<div class="input-group" style="display:none"><label>Jour du mois pour rappel</label><input type="number" id="c-jour" min="1" max="31" value="1"></div>
+<button class="btn btn-primary" onclick="saveCharge()">Enregistrer</button>
+<button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+`);
+}
+
+function saveCharge(){
+const type = document.getElementById('c-type').value;
+const charge = {
+id: uid(), type, montant: parseFloat(document.getElementById('c-montant').value)||0,
+note: document.getElementById('c-note').value, date: new Date().toISOString(),
+recurrente: document.getElementById('c-rec').checked,
+jourRappel: parseInt(document.getElementById('c-jour').value)||null,
+categorie: ['Loyer','Salaire','Électricité CIE'].includes(type)?'fixe':'variable',
+deleted: false
+};
+DB.charges.push(charge);
+saveDB(); closeModal(); render();
+}
+
+function renderClients(){
+const el = document.getElementById('page-clients');
+DB.clients.forEach(c=>{c.solde = DB.ventes.filter(v=>v.clientId===c.id&&!v.paye&&!v.deleted).reduce((s,v)=>s+v.montant,0)});
+el.innerHTML = `
+<button class="btn btn-primary no-print" onclick="addClient()">+ Nouveau Client</button>
+<div class="card" style="margin-top:16px">
+${DB.clients.map(c=>`<div class="list-item"><div><b>${c.nom}</b><br><small>${c.telephone}</small></div><div><b style="color:${c.solde>0?'var(--red)':'var(--green)'}">${fmt(c.solde)}F</b>${c.solde>0?`<br><a href="https://wa.me/229${c.telephone}?text=Bonjour ${c.nom}, rappel. Tu me dois ${fmt(c.solde)}F. Merci - Bénéfice Pro Bénin" class="badge badge-green no-print">WhatsApp</a>`:''}</div></div>`).join('')||'<p>Aucun client</p>'}
+</div>
+`;
+}
+
+function addClient(){
+showModal('Nouveau Client', `
+<div class="input-group"><label>Nom</label><input type="text" id="cl-nom" placeholder="Kofi"></div>
+<div class="input-group"><label>Téléphone 8 chiffres</label><input type="tel" id="cl-tel" placeholder="97123456" pattern="[0-9]{8}"></div>
+<button class="btn btn-primary" onclick="saveClient()">Enregistrer</button>
+<button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+`);
+}
+
+function saveClient(){
+const tel = document.getElementById('cl-tel').value;
+if(!/^[0-9]{8}$/.test(tel)) return alert('Téléphone invalide. 8 chiffres requis');
+DB.clients.push({id:uid(), nom:document.getElementById('cl-nom').value, telephone:tel, solde:0});
+saveDB(); closeModal(); render();
+}
+
+function renderBilan(){
+const b = calcBenefice('mois');
+const el = document.getElementById('page-bilan');
+const chargesFixes = b.charges.filter(c=>c.categorie==='fixe').reduce((s,c)=>s+c.montant,0);
+const chargesVar = b.charges.filter(c=>c.categorie==='variable').reduce((s,c)=>s+c.montant,0);
+el.innerHTML = `
+<div class="card">
+<h3>Compte d'Exploitation - ${new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</h3>
+<table>
+<tr><td>CHIFFRE D'AFFAIRES</td><td><b>${fmt(b.ca)}</b></td></tr>
+<tr><td>- Coût d'achat marchandises</td><td>-${fmt(b.couts)}</td></tr>
+<tr style="border-top:2px solid var(--dark)"><td><b>= MARGE BRUTE</b></td><td><b>${fmt(b.margeBrute)}</b></td></tr>
+<tr><td>- Charges Fixes</td><td>-${fmt(chargesFixes)}</td></tr>
+<tr><td>- Charges Variables</td><td>-${fmt(chargesVar)}</td></tr>
+<tr style="border-top:2px solid var(--dark)"><td><b>= BÉNÉFICE NET</b></td><td><b>${fmt(b.beneficeNet)}</b></td></tr>
+<tr><td>TAUX MARGE NETTE</td><td><b>${b.ca?Math.round(b.beneficeNet/b.ca*100):0}%</b></td></tr>
+</table>
+<button class="btn btn-secondary no-print" onclick="exportCSV()">?? Exporter CSV</button>
+<button class="btn btn-secondary no-print" onclick="window.print()">??? Imprimer</button>
+</div>
+<p style="font-size:12px;color:#6b7280;text-align:center">Document non certifié, usage interne</p>
+`;
+}
+
+function exportCSV(){
+const b = calcBenefice('mois');
+let csv = 'Type;Montant\nCA;'+b.ca+'\nCouts;'+b.couts+'\nMarge Brute;'+b.margeBrute+'\nCharges;'+b.totalCharges+'\nBenefice Net;'+b.beneficeNet;
+const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = `Bilan-BPB-${new Date().toISOString().slice(0,7)}.csv`;
+a.click();
+}
+
+function renderSettings(){
+const el = document.getElementById('page-settings');
+const exp = new Date(DB.config.expires).toLocaleDateString('fr-FR');
+el.innerHTML = `
+<div class="card">
+<h3>Mon coffre-fort</h3>
+<p><b>ID Unique :</b></p>
+<div class="input-group"><input type="text" value="${DB.meta.deviceId}" readonly><button class="btn btn-secondary" style="margin-top:8px" onclick="navigator.clipboard.writeText('${DB.meta.deviceId}');alert('ID copié')">Copier ID</button></div>
+<p><b>Statut :</b> ${IS_PRO?'<span class="badge badge-green">Pro</span>':'<span class="badge badge-orange">Essai</span>'} - Expire le ${exp}</p>
+</div>
+<div class="card">
+<h3>Activer Pro 1000F/mois</h3>
+<div class="input-group"><label>Coller code d'activation reçu par WhatsApp</label><input type="text" id="act-key" placeholder="PRO-202607-XXXXXXXX-99"></div>
+<button class="btn btn-primary" onclick="activateKey()">Activer</button>
+</div>
+<div class="card">
+<h3>Mes données</h3>
+<button class="btn btn-secondary" onclick="exportData()">?? Exporter tout.json</button>
+<button class="btn btn-secondary" onclick="document.getElementById('import-file').click()" style="margin-top:8px">?? Importer.json</button>
+<input type="file" id="import-file" accept=".json" class="hidden" onchange="importData(event)">
+</div>
+`;
+}
+
+function activateKey(){
+const key = document.getElementById('act-key').value.trim().toUpperCase();
+const parts = key.split('-');
+if(parts.length!==4||parts[0]!=='PRO') return alert('Format invalide');
+const [_,yyyymm,deviceShort,checksum] = parts;
+const expectedShort = DB.meta.deviceId.slice(-8);
+if(deviceShort!==expectedShort) return alert(`Cette clé est pour un autre téléphone. ID attendu: BPB-****-${deviceShort}`);
+const sum = [...(DB.meta.deviceId+yyyymm)].reduce((s,c)=>s+c.charCodeAt(0),0);
+if(parseInt(checksum)!== sum%99) return alert('Code invalide. Transfère ce message à l'admin: +2290167863289');
+const year = parseInt(yyyymm.slice(0,4
