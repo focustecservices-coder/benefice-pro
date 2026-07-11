@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#16a34a">
 <title>Bénéfice Pro Bénin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <style>
 :root{--bg:#0b1a13;--card:#121f17;--text:#e7f5ec;--muted:#b6c9be;--accent:#16a34a;--accent2:#22c55e;--danger:#dc2626;--warn:#f59e0b}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,6 +22,7 @@ input{width:100%;padding:10px;border-radius:8px;border:1px solid #2a3a31;backgro
 .btn-secondary{background:#1f2d23;color:var(--text)}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-print{background:var(--warn);color:#000}
+.btn-excel{background:#217346;color:#fff}
 .tabs{display:flex;gap:5px;margin-bottom:10px;overflow-x:auto}
 .tab{padding:8px 12px;background:#1f2d23;border:none;border-radius:8px;color:var(--muted);font-size:13px;white-space:nowrap}
 .tab.active{background:var(--accent);color:#001b0d}
@@ -32,6 +35,7 @@ h3{font-size:15px;margin-bottom:8px}
 .stat{padding:10px;background:#0f1a14;border-radius:8px;text-align:center}
 .stat b{display:block;font-size:20px;color:var(--accent2)}
 .stat span{font-size:11px;color:var(--muted)}
+#chartBox{height:200px;margin-top:10px}
 @media print{body{background:#fff;color:#000}.no-print{display:none}.card{border:1px solid #ccc}}
 </style>
 </head>
@@ -39,7 +43,7 @@ h3{font-size:15px;margin-bottom:8px}
 <div class="container">
   <div class="hero no-print">
     <h1>Bénéfice Pro Bénin</h1>
-    <p>Gestion simple commerçant</p>
+    <p>Gestion simple commerçant - 1000F/mois</p>
   </div>
 
   <div id="trialBox" class="trial no-print"></div>
@@ -79,4 +83,152 @@ h3{font-size:15px;margin-bottom:8px}
 
     <div id="depenseTab" class="card" style="display:none">
       <h3>💸 Nouvelle dépense</h3>
-      <input type="text" id="d_nom" placeholder="
+      <input type="text" id="d_nom" placeholder="Ex: Loyer, Transport">
+      <input type="number" id="d_montant" placeholder="Montant FCFA">
+      <button class="btn btn-danger" onclick="addDepense()">Enregistrer dépense</button>
+      <div id="depenseList" style="margin-top:10px"></div>
+    </div>
+
+    <div id="stockTab" class="card" style="display:none">
+      <h3>📦 Gestion stock</h3>
+      <input type="text" id="s_nom" placeholder="Nom produit">
+      <div class="grid2">
+        <input type="number" id="s_entree" placeholder="Entrée +">
+        <input type="number" id="s_sortie" placeholder="Sortie -">
+      </div>
+      <button class="btn" onclick="updateStock()">Mettre à jour</button>
+      <div id="stockList" style="margin-top:10px"></div>
+    </div>
+
+    <div id="rapportTab" class="card" style="display:none">
+      <h3>📄 Rapport du mois</h3>
+      <div id="chartBox"><canvas id="chartVentes"></canvas></div>
+      <div id="rapportContent"></div>
+      <button class="btn btn-print" onclick="window.print()">🖨️ Imprimer PDF</button>
+      <button class="btn btn-excel" onclick="exportExcel()">📊 Export Excel</button>
+    </div>
+  </div>
+
+  <div id="lockedApp" class="card no-print" style="display:none;text-align:center">
+    <h2>🔒 Essai terminé</h2>
+    <p><b>Abonnement : 1000 FCFA / mois</b></p>
+    <p style="margin:10px 0;font-size:13px">Renouvelle ton abonnement :</p>
+    <a href="https://wa.me/22967863289?text=Bonjour, je renouvelle Bénéfice Pro pour 1 mois" class="btn">💬 WhatsApp 22967863289</a>
+    <div style="margin-top:15px">
+      <label>Code de renouvellement reçu</label>
+      <input type="text" id="codeInput" placeholder="Entre le code">
+      <button class="btn" onclick="unlock()">Débloquer 1 mois</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CODE = 'BENIN2024'; // CODE MENSUEL - CHANGE CHAQUE MOIS
+const ABO_JOURS = 30; // 30 JOURS = 1 MOIS
+let db = JSON.parse(localStorage.getItem('bp_db') || '{"ventes":[],"depenses":[],"stock":{}}');
+let chartInstance = null;
+
+function saveDB(){
+  localStorage.setItem('bp_db', JSON.stringify(db));
+  updateDash();
+}
+
+function checkTrial(){
+  let first = localStorage.getItem('bp_first');
+  if(!first){
+    first = Date.now();
+    localStorage.setItem('bp_first', first);
+  }
+  let left = 10 - Math.floor((Date.now() - first) / 86400000);
+  if(left <= 0){
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('lockedApp').style.display = 'block';
+    document.getElementById('trialBox').style.display = 'none';
+    return false;
+  }
+  document.getElementById('trialBox').innerHTML = `⏳ Essai: <b>${left}j restants</b> | 1000F/mois | 22967863289`;
+  return true;
+}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  event.target.classList.add('active');
+  ['vente','depense','stock','rapport'].forEach(x=>{
+    document.getElementById(x+'Tab').style.display = x===t?'block':'none';
+  });
+  if(t==='depense') renderDepenses();
+  if(t==='stock') renderStock();
+  if(t==='rapport') {renderRapport();drawChart();}
+}
+
+function addVente(){
+  if(!checkTrial()) return;
+  let v = {
+    nom: document.getElementById('v_nom').value || 'Vente',
+    pv: +document.getElementById('v_pv').value || 0,
+    cr: +document.getElementById('v_cr').value || 0,
+    qt: +document.getElementById('v_qt').value || 1,
+    date: new Date().toISOString()
+  };
+  if(v.pv === 0) return alert('Prix de vente obligatoire');
+  v.benef = (v.pv - v.cr) * v.qt;
+  v.ca = v.pv * v.qt;
+  db.ventes.unshift(v);
+  saveDB();
+  ['v_nom','v_pv','v_cr','v_qt'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('v_qt').value=1;
+  alert('✅ Vente: +' + v.benef.toLocaleString() + ' FCFA');
+}
+
+function addDepense(){
+  let d = {
+    nom: document.getElementById('d_nom').value || 'Dépense',
+    montant: +document.getElementById('d_montant').value || 0,
+    date: new Date().toISOString()
+  };
+  if(d.montant === 0) return alert('Montant obligatoire');
+  db.depenses.unshift(d);
+  saveDB();
+  document.getElementById('d_nom').value = '';
+  document.getElementById('d_montant').value = '';
+  renderDepenses();
+}
+
+function renderDepenses(){
+  document.getElementById('depenseList').innerHTML = db.depenses.slice(0,10).map(d=>
+    `<div class="item">${d.nom}: <b style="color:var(--danger)">-${d.montant.toLocaleString()} FCFA</b><br><small>${new Date(d.date).toLocaleDateString()}</small></div>`
+  ).join('') || '<p style="color:var(--muted)">Aucune dépense</p>';
+}
+
+function updateStock(){
+  let nom = document.getElementById('s_nom').value;
+  if(!nom) return alert('Nom du produit obligatoire');
+  if(!db.stock[nom]) db.stock[nom] = 0;
+  db.stock[nom] += (+document.getElementById('s_entree').value || 0);
+  db.stock[nom] -= (+document.getElementById('s_sortie').value || 0);
+  saveDB();
+  renderStock();
+  ['s_nom','s_entree','s_sortie'].forEach(id=>document.getElementById(id).value='');
+}
+
+function renderStock(){
+  document.getElementById('stockList').innerHTML = Object.entries(db.stock).map(([n,q])=>
+    `<div class="item">${n}: <b>${q} unités</b></div>`
+  ).join('') || '<p style="color:var(--muted)">Stock vide</p>';
+}
+
+function updateDash(){
+  let now = new Date();
+  let today = now.toDateString();
+  let month = now.getMonth();
+  let year = now.getFullYear();
+
+  let d_v = db.ventes.filter(v=>new Date(v.date).toDateString()===today);
+  let d_b = d_v.reduce((s,v)=>s+v.benef,0);
+  let d_c = d_v.reduce((s,v)=>s+v.ca,0);
+  let d_dp = db.depenses.filter(d=>new Date(d.date).toDateString()===today).reduce((s,d)=>s+d.montant,0);
+
+  let m_b = db.ventes.filter(v=>{let d=new Date(v.date);return d.getMonth()===month&&d.getFullYear()===year}).reduce((s,v)=>s+v.benef,0);
+  let a_b = db.ventes.filter(v=>new Date(v.date).getFullYear()===year).reduce((s,v)=>s+v.benef,0);
+
+  document.getElementById('d
