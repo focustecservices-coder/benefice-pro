@@ -1,3 +1,22 @@
-self.addEventListener('install', event => {
-  self.skipWaiting();
-});
+{
+  "name": "Bénéfice Pro Bénin",
+  "short_name": "Bénéfice Pro",
+  "start_url": "./",
+  "display": "standalone", 
+  "background_color": "#00c853",
+  "theme_color": "#00c853",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png", 
+      "purpose": "any"
+    }
+  ]
+}
