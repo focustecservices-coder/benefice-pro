@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#16a34a">
 <title>Bénéfice Pro Bénin</title>
-<link rel="manifest" href="./manifest.json">
+<link rel="manifest" href="./manifest.json?v=2">
 <link rel="icon" href="./logo.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -383,8 +383,8 @@ renderDepenses();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-     .then(reg => console.log('SW installé'))
-     .catch(err => console.log('SW erreur:', err));
+    .then(reg => console.log('SW installé'))
+    .catch(err => console.log('SW erreur:', err));
   });
 }
 </script>
