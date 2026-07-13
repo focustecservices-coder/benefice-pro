@@ -1,29 +1,32 @@
-{
-  "name": "Bénéfice Pro Bénin",
-  "short_name": "Bénéfice Pro",
-  "id": "benefice-pro-benin",
-  "description": "Application de gestion de ventes, dépenses et stock pour commerçants et PME au Bénin",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0b1a13",
-  "theme_color": "#16a34a",
-  "categories": ["business", "finance", "productivity"],
-  "lang": "fr-BJ",
-  "dir": "ltr",
-  "icons": [
-    {
-      "src": "./logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
-}
+const CACHE_NAME = 'benefice-pro-v2';
+const urlsToCache = [
+  './',
+  './index.html',
+  './manifest.json',
+  './logo.png'
+];
+
+self.addEventListener('install', event => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+    ))
+  );
+  self.clients.claim();
+});
